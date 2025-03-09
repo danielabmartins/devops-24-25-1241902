@@ -32,17 +32,52 @@ public class Employee {
 	private String firstName;
 	private String lastName;
 	private String description;
+	private int jobYears;
 
 
 	protected Employee() {
 	}
 
-	public Employee(String firstName, String lastName, String description) {
+	public Employee(String firstName, String lastName, String description, int jobYears) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.description = description;
+		this.jobYears = jobYears;
+
+		if(isFirstNameInvalid(firstName)){
+			throw new IllegalArgumentException("First name cannot be empty!");
+		}
+
+		if(isLastNameInvalid(lastName)){
+			throw new IllegalArgumentException("Last name cannot be empty!");
+		}
+
+		if(isDescriptionInvalid(description)){
+			throw new IllegalArgumentException("Description cannot be empty!");
+		}
+
+		if (areJobYearsInvalid(jobYears)){
+			throw new IllegalArgumentException("Insert a valid number of job years.");
+		}
 
 	}
+
+	private boolean isFirstNameInvalid (String firstName) {
+        return firstName == null || firstName.isBlank();
+    }
+
+	private boolean isLastNameInvalid (String lastName) {
+		return lastName == null || lastName.isBlank();
+	}
+
+	private boolean isDescriptionInvalid (String description) {
+		return description == null || description.isBlank() ;
+	}
+
+	private boolean areJobYearsInvalid(int jobYears) {
+		return jobYears <= 0 || jobYears > 100;
+	}
+
 
 	@Override
 	public boolean equals(Object o) {
@@ -52,13 +87,14 @@ public class Employee {
 		return Objects.equals(id, employee.id) &&
 			Objects.equals(firstName, employee.firstName) &&
 			Objects.equals(lastName, employee.lastName) &&
-			Objects.equals(description, employee.description);
+			Objects.equals(description, employee.description) &&
+			Objects.equals(jobYears, employee.jobYears);
 	}
 
 	@Override
 	public int hashCode() {
 
-		return Objects.hash(id, firstName, lastName, description);
+		return Objects.hash(id, firstName, lastName, description, jobYears);
 	}
 
 	public Long getId() {
@@ -93,6 +129,14 @@ public class Employee {
 		this.description = description;
 	}
 
+	public int getJobYears(){
+		return jobYears;
+	}
+
+	public void setJobYears(int jobYears){
+		this.jobYears = jobYears;
+	}
+
 	@Override
 	public String toString() {
 		return "Employee{" +
@@ -100,6 +144,7 @@ public class Employee {
 			", firstName='" + firstName + '\'' +
 			", lastName='" + lastName + '\'' +
 			", description='" + description + '\'' +
+				", jobYears='" + jobYears + '\'' +
 			'}';
 	}
 }
