@@ -1,6 +1,5 @@
 package com.greglturnquist.payroll;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -11,6 +10,27 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class EmployeeTest {
+
+    public static Stream<Arguments> provideValidFirstName() {
+        return Stream.of(
+                arguments("Frodo"),
+                arguments("Bilbo")
+        );
+    }
+    @ParameterizedTest
+    @MethodSource("provideValidFirstName")
+    void testValidFirstNames(String firstName) {
+        // Arrange
+        String lastName = "Baggins";
+        String description = "Ring Bearer";
+        int jobYears = 3;
+
+        // Act
+        Employee employee = new Employee(firstName,lastName,description,jobYears);
+
+        // Assert
+        assertEquals(firstName, employee.getFirstName());
+    }
 
     public static Stream<Arguments> provideInvalidFirstName() {
         return Stream.of(
@@ -34,6 +54,27 @@ class EmployeeTest {
         assertEquals(expectedMessage, exception.getMessage());
     }
 
+    public static Stream<Arguments> provideValidLastName() {
+        return Stream.of(
+                arguments("Baggins"),
+                arguments("Gamgee")
+        );
+    }
+    @ParameterizedTest
+    @MethodSource("provideValidLastName")
+    void testValidLastNames(String lastName) {
+        // Arrange
+        String firstName = "Frodo";
+        String description = "Ring Bearer";
+        int jobYears = 3;
+
+        // Act
+        Employee employee = new Employee(firstName,lastName,description,jobYears);
+
+        // Assert
+        assertEquals(lastName, employee.getLastName());
+    }
+
     public static Stream<Arguments> provideInvalidLastName() {
         return Stream.of(
                 arguments(null, "Last name cannot be empty!"),
@@ -55,6 +96,28 @@ class EmployeeTest {
         });
         assertEquals(expectedMessage, exception.getMessage());
     }
+
+    public static Stream<Arguments> provideValidDescription() {
+        return Stream.of(
+                arguments("Ring Bearer"),
+                arguments("Gardener of the Shire")
+        );
+    }
+    @ParameterizedTest
+    @MethodSource("provideValidDescription")
+    void testValidLDescription(String description) {
+        // Arrange
+        String firstName = "Frodo";
+        String lastName = "Baggins";
+        int jobYears = 3;
+
+        // Act
+        Employee employee = new Employee(firstName,lastName,description,jobYears);
+
+        // Assert
+        assertEquals(description, employee.getDescription());
+    }
+
 
     public static Stream<Arguments> provideInvalidDescription() {
         return Stream.of(

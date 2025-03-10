@@ -71,7 +71,7 @@ public class Employee {
 	}
 
 	private boolean isDescriptionInvalid (String description) {
-		return description == null || description.isBlank() ;
+		return description == null || description.isBlank();
 	}
 
 	private boolean areJobYearsInvalid(int jobYears) {
