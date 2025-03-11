@@ -75,6 +75,7 @@ public class Employee {
 	}
 
 	private boolean areJobYearsInvalid(int jobYears) {
+
 		return jobYears <= 0 || jobYears > 100;
 	}
 
@@ -144,7 +145,7 @@ public class Employee {
 			", firstName='" + firstName + '\'' +
 			", lastName='" + lastName + '\'' +
 			", description='" + description + '\'' +
-				", jobYears='" + jobYears + '\'' +
+			", jobYears='" + jobYears +
 			'}';
 	}
 }
