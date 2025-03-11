@@ -1,4 +1,4 @@
-# Class Assignment 1: Version control with Git - Technical Report
+# Class Assignment 1: Technical Report
 
 **Author:** Daniela Bento Martins (1241902)<br>
 **Programme:** SWitCH DEV<br>
@@ -6,7 +6,7 @@
 
 ### **Introduction**
 
-This DevOps project, regarding the Version Control with Git, is divided into two parts. 
+This DevOps project is divided into two parts... 
 
 Part 1 was also divided into three parts. The first, is intended to work without branches, the second relies on the use
 of branches and the third, and final, explores an alternative solution.

@@ -1,5 +1,6 @@
 package com.greglturnquist.payroll;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -11,61 +12,53 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class EmployeeTest {
 
-    public static Stream<Arguments> provideValidEmployees() {
-        return Stream.of(
-                arguments("Bilbo", "Baggins", "Adventurer", 50),
-                arguments("Frodo", "Baggins", "Ring Bearer", 3),
-                arguments("Samwise", "Gamgee", "Gardener", 7),
-                arguments("Legolas", "Greenleaf", "Archer", 100)
-        );
-    }
+    @Test
+    void shouldCreateEmployee() {
+        //Arrange
 
-    @ParameterizedTest
-    @MethodSource("provideValidEmployees")
-    void shouldCreateEmployee(String firstName, String lastName, String description, int jobYears) {
         // Act
-        Employee employee = new Employee(firstName, lastName, description, jobYears);
+        Employee employee = new Employee("Frodo", "Baggins", "Ring Bearer", 3);
 
         // Assert
         assertNotNull(employee);
     }
 
-
-    public static Stream<Arguments> provideValidFirstName() {
+    public static Stream<Arguments> provideValidArguments() {
         return Stream.of(
-                arguments("Frodo"),
-                arguments("Bilbo")
+                arguments("Frodo","Baggins","Ring Bearer",3),
+                arguments("Bilbo","Baggins","Adventurer",5)
         );
     }
     @ParameterizedTest
-    @MethodSource("provideValidFirstName")
-    void testValidFirstNames(String firstName) {
+    @MethodSource("provideValidArguments")
+    void testValidArguments(String firstName,String lastName, String description, int jobYears) {
         // Arrange
-        String lastName = "Baggins";
-        String description = "Ring Bearer";
-        int jobYears = 3;
 
         // Act
         Employee employee = new Employee(firstName,lastName,description,jobYears);
 
         // Assert
-        assertEquals(firstName, employee.getFirstName());
+        assertNotNull(employee);
     }
 
-    public static Stream<Arguments> provideInvalidFirstName() {
+    public static Stream<Arguments> provideInvalidArguments() {
         return Stream.of(
-                arguments(null, "First name cannot be empty!"),
-                arguments("", "First name cannot be empty!"),
-                arguments(" ", "First name cannot be empty!")
-        );
+                arguments(null,"Baggins","Ring Bearer",3,"First name cannot be empty!"),
+                arguments("","Baggins","Ring Bearer",3,"First name cannot be empty!"),
+                arguments(" ","Baggins","Ring Bearer",3,"First name cannot be empty!"),
+                arguments("Frodo",null,"Ring Bearer",3,"Last name cannot be empty!"),
+                arguments("Frodo","","Ring Bearer",3,"Last name cannot be empty!"),
+                arguments("Frodo"," ","Ring Bearer",3,"Last name cannot be empty!"),
+                arguments("Frodo","Baggins",null,3,"Description cannot be empty!"),
+                arguments("Frodo","Baggins","",3,"Description cannot be empty!"),
+                arguments("Frodo","Baggins"," ",3,"Description cannot be empty!"),
+                arguments("Frodo","Baggins","Ring Bearer",-1,"Insert a valid number of job years."),
+                arguments("Frodo","Baggins","Ring Bearer",101,"Insert a valid number of job years.")
+                );
     }
     @ParameterizedTest
-    @MethodSource("provideInvalidFirstName")
-    void testInvalidFirstNames(String firstName, String expectedMessage) throws IllegalArgumentException {
-        // Arrange
-        String lastName = "Baggins";
-        String description = "Ring Bearer";
-        int jobYears = 3;
+    @MethodSource("provideInvalidArguments")
+    void testInvalidArguments(String firstName,String lastName, String description, int jobYears, String expectedMessage) throws IllegalArgumentException {
 
         // Act + Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -74,119 +67,86 @@ class EmployeeTest {
         assertEquals(expectedMessage, exception.getMessage());
     }
 
-    public static Stream<Arguments> provideValidLastName() {
-        return Stream.of(
-                arguments("Baggins"),
-                arguments("Gamgee")
+    @Test
+    void testSetFirstName_ValidValue() {
+        //arrange
+        Employee employee = new Employee();
+        //act
+        employee.setFirstName("Bilbo");
+        //assert
+        assertEquals("Bilbo",employee.getFirstName());
+    }
+
+    @Test
+    void testSetFirstName_InvalidValue() {
+        Employee employee = new Employee();
+
+        assertAll(
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setFirstName(null)),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setFirstName("")),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setFirstName(" "))
         );
     }
-    @ParameterizedTest
-    @MethodSource("provideValidLastName")
-    void testValidLastNames(String lastName) {
-        // Arrange
-        String firstName = "Frodo";
-        String description = "Ring Bearer";
-        int jobYears = 3;
 
-        // Act
-        Employee employee = new Employee(firstName,lastName,description,jobYears);
-
-        // Assert
-        assertEquals(lastName, employee.getLastName());
+    @Test
+    void testSetLastName_ValidValue() {
+        //arrange
+        Employee employee = new Employee();
+        //act
+        employee.setLastName("Baggins");
+        //assert
+        assertEquals("Baggins",employee.getLastName());
     }
 
-    public static Stream<Arguments> provideInvalidLastName() {
-        return Stream.of(
-                arguments(null, "Last name cannot be empty!"),
-                arguments("", "Last name cannot be empty!"),
-                arguments(" ", "Last name cannot be empty!")
+    @Test
+    void testSetLastName_InvalidValue() {
+        Employee employee = new Employee();
+
+        assertAll(
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setLastName(null)),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setLastName("")),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setLastName(" "))
         );
     }
-    @ParameterizedTest
-    @MethodSource("provideInvalidLastName")
-    void testInvalidLastNames(String lastName, String expectedMessage) throws IllegalArgumentException {
-        // Arrange
-        String firstName = "Frodo";
-        String description = "Ring Bearer";
-        int jobYears = 3;
 
-        // Act + Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Employee(firstName,lastName,description,jobYears);
-        });
-        assertEquals(expectedMessage, exception.getMessage());
+    @Test
+    void testSetDescription_ValidValue() {
+        //arrange
+        Employee employee = new Employee();
+        //act
+        employee.setDescription("Ring Bearer");
+        //assert
+        assertEquals("Ring Bearer",employee.getDescription());
     }
 
-    public static Stream<Arguments> provideValidDescription() {
-        return Stream.of(
-                arguments("Ring Bearer"),
-                arguments("Gardener of the Shire")
+    @Test
+    void testSetDescription_InvalidValue() {
+        Employee employee = new Employee();
+
+        assertAll(
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setDescription(null)),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setDescription("")),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setDescription(" "))
         );
     }
-    @ParameterizedTest
-    @MethodSource("provideValidDescription")
-    void testValidLDescription(String description) {
-        // Arrange
-        String firstName = "Frodo";
-        String lastName = "Baggins";
-        int jobYears = 3;
 
-        // Act
-        Employee employee = new Employee(firstName,lastName,description,jobYears);
 
-        // Assert
-        assertEquals(description, employee.getDescription());
+    @Test
+    void testSetJobYears_ValidValue() {
+        //arrange
+        Employee employee = new Employee();
+        //act
+        employee.setJobYears(5);
+        //assert
+        assertEquals(5, employee.getJobYears());
     }
+    @Test
+    void testSetJobYears_InvalidValue() {
+        Employee employee = new Employee();
 
-
-    public static Stream<Arguments> provideInvalidDescription() {
-        return Stream.of(
-                arguments(null, "Description cannot be empty!"),
-                arguments("", "Description cannot be empty!"),
-                arguments(" ", "Description cannot be empty!")
+        assertAll(
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setJobYears(-1)),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setJobYears(101))
         );
     }
-    @ParameterizedTest
-    @MethodSource("provideInvalidDescription")
-    void testInvalidDescription(String description, String expectedMessage) throws IllegalArgumentException {
-        // Arrange
-        String firstName = "Frodo";
-        String lastName = "Baggins";
-        int jobYears = 3;
-
-        // Act + Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Employee(firstName,lastName,description,jobYears);
-        });
-        assertEquals(expectedMessage, exception.getMessage());
-    }
-
-    public static Stream<Arguments> provideInvalidJobYears() {
-        return Stream.of(
-                arguments(-1, "Insert a valid number of job years."),
-                arguments(0, "Insert a valid number of job years."),
-                arguments(101, "Insert a valid number of job years.")
-        );
-    }
-    @ParameterizedTest
-    @MethodSource("provideInvalidJobYears")
-    void testInvalidJobYears(int jobYears, String expectedMessage) throws IllegalArgumentException {
-        // Arrange
-        String firstName = "Frodo";
-        String lastName = "Baggins";
-        String description = "Ring bearer";
-
-        // Act + Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Employee(firstName,lastName,description,jobYears);
-        });
-        assertEquals(expectedMessage, exception.getMessage());
-    }
-
-
-
-
-
-
-
 }

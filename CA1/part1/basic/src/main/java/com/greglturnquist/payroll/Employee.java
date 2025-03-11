@@ -39,10 +39,6 @@ public class Employee {
 	}
 
 	public Employee(String firstName, String lastName, String description, int jobYears) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.description = description;
-		this.jobYears = jobYears;
 
 		if(isFirstNameInvalid(firstName)){
 			throw new IllegalArgumentException("First name cannot be empty!");
@@ -60,6 +56,11 @@ public class Employee {
 			throw new IllegalArgumentException("Insert a valid number of job years.");
 		}
 
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.description = description;
+		this.jobYears = jobYears;
+
 	}
 
 	private boolean isFirstNameInvalid (String firstName) {
@@ -76,7 +77,7 @@ public class Employee {
 
 	private boolean areJobYearsInvalid(int jobYears) {
 
-		return jobYears <= 0 || jobYears > 100;
+		return jobYears < 0 || jobYears > 100;
 	}
 
 
@@ -110,7 +111,10 @@ public class Employee {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
+	public void setFirstName(String firstName)  {
+		if(isFirstNameInvalid(firstName))
+			throw new IllegalArgumentException("First name cannot be empty!");
+
 		this.firstName = firstName;
 	}
 
@@ -119,6 +123,8 @@ public class Employee {
 	}
 
 	public void setLastName(String lastName) {
+		if(isLastNameInvalid(lastName))
+			throw new IllegalArgumentException("Last name cannot be empty!");
 		this.lastName = lastName;
 	}
 
@@ -127,6 +133,9 @@ public class Employee {
 	}
 
 	public void setDescription(String description) {
+		if(isDescriptionInvalid(description))
+			throw new IllegalArgumentException("Description cannot be empty!");
+
 		this.description = description;
 	}
 
@@ -134,7 +143,9 @@ public class Employee {
 		return jobYears;
 	}
 
-	public void setJobYears(int jobYears){
+	public void setJobYears(int jobYears) {
+		if(areJobYearsInvalid(jobYears))
+			throw new IllegalArgumentException("Insert a valid number of job years.");
 		this.jobYears = jobYears;
 	}
 
