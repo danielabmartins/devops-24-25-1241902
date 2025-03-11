@@ -11,6 +11,26 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class EmployeeTest {
 
+    public static Stream<Arguments> provideValidEmployees() {
+        return Stream.of(
+                arguments("Bilbo", "Baggins", "Adventurer", 50),
+                arguments("Frodo", "Baggins", "Ring Bearer", 3),
+                arguments("Samwise", "Gamgee", "Gardener", 7),
+                arguments("Legolas", "Greenleaf", "Archer", 100)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideValidEmployees")
+    void shouldCreateEmployee(String firstName, String lastName, String description, int jobYears) {
+        // Act
+        Employee employee = new Employee(firstName, lastName, description, jobYears);
+
+        // Assert
+        assertNotNull(employee);
+    }
+
+
     public static Stream<Arguments> provideValidFirstName() {
         return Stream.of(
                 arguments("Frodo"),
