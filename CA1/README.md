@@ -103,12 +103,22 @@ of the Rings, I chose to maintain this theme by using similar examples in my tes
 
 I will go through each class, detailing the changes and additions made, including new methods, attributes, and tests, to fulfil the project requirements.
 
-- **Employee.java:** As requested, I added the *jobYears* field along with its getter and setter method.
+- **Employee.java:** 
+
+- As requested, I added the jobYears field along with its getter and setter methods. To ensure data integrity, I also included validations in the setter methods. This was done to prevent invalid values, 
+from being assigned and thus avoids potential errors. Both methods for jobYears can be found below and the setter method illustrates the updates
+made to the other setter methods:
 
 ~~~
-	public int getJobYears(){ return jobYears; }
+	public int getJobYears(){
+		return jobYears;
+	}
 
-	public void setJobYears(int jobYears){ this.jobYears = jobYears; }
+	public void setJobYears(int jobYears) {
+		if(areJobYearsInvalid(jobYears))
+			throw new IllegalArgumentException("Insert a valid number of job years.");
+		this.jobYears = jobYears;
+	}
 ~~~
 
 It was also necessary to validate all attributes: First Name, Last Name, Description, and Job Years. The first three, being of type String, were validated to ensure they were
@@ -129,18 +139,14 @@ neither null nor empty. For Job Years, an int type, I decided to restrict the va
 
 	private boolean areJobYearsInvalid(int jobYears) {
 		
-		return jobYears <= 0 || jobYears > 100;
+		return jobYears < 0 || jobYears > 100;
 	}
 ~~~ 
 Finally, I added validation to the Employee constructor by calling the existing validation methods for each attribute. This makes sure that any invalid data is caught when creating 
 an Employee.
 
 ~~~ 
-public Employee(String firstName, String lastName, String description, int jobYears) {
-this.firstName = firstName;
-this.lastName = lastName;
-this.description = description;
-this.jobYears = jobYears;
+	public Employee(String firstName, String lastName, String description, int jobYears) {
 
 		if(isFirstNameInvalid(firstName)){
 			throw new IllegalArgumentException("First name cannot be empty!");
@@ -158,6 +164,11 @@ this.jobYears = jobYears;
 			throw new IllegalArgumentException("Insert a valid number of job years.");
 		}
 
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.description = description;
+		this.jobYears = jobYears;
+
 	}
 ~~~
 
@@ -167,74 +178,73 @@ This class was added to the newly created test directory, as there were no exist
 The tests focus on verifying the functionality of the Employee constructor and ensuring that attribute validation works correctly
 
 ~~~
- public static Stream<Arguments> provideValidEmployees() {
-        return Stream.of(
-                arguments("Bilbo", "Baggins", "Adventurer", 50),
-                arguments("Frodo", "Baggins", "Ring Bearer", 3),
-                arguments("Samwise", "Gamgee", "Gardener", 7),
-                arguments("Legolas", "Greenleaf", "Archer", 100)
-        );
-    }
+@Test
+    void shouldCreateEmployee() {
+        //Arrange
 
-    @ParameterizedTest
-    @MethodSource("provideValidEmployees")
-    void shouldCreateEmployee(String firstName, String lastName, String description, int jobYears) {
         // Act
-        Employee employee = new Employee(firstName, lastName, description, jobYears);
+        Employee employee = new Employee("Frodo", "Baggins", "Ring Bearer", 3);
 
         // Assert
         assertNotNull(employee);
+        assertEquals("Frodo", employee.getFirstName());
+        assertEquals("Baggins",employee.getLastName());
+        assertEquals("Ring Bearer", employee.getDescription());
+        assertEquals(3,employee.getJobYears());
     }
-~~~ 
+    
 
-The following examples demonstrate tests for the Employee class attributes. For each attribute, I’ve included two tests:
-one that uses valid values to ensure the Employee is created correctly, and another that uses invalid values to verify that the appropriate exception is thrown
-As mentioned, the String type attributes are tested for null and empty values, while the int type attribute tests that the years fall within a specific range
-
-Below is an example of a test that checks whether the first name is valid, followed by a test that demonstrates invalid first names.
-
-~~~
-public static Stream<Arguments> provideValidFirstName() {
-return Stream.of(
-arguments("Frodo"),
-arguments("Bilbo")
-);
-}
-@ParameterizedTest
-@MethodSource("provideValidFirstName")
-void testValidFirstNames(String firstName) {
-// Arrange
-String lastName = "Baggins";
-String description = "Ring Bearer";
-int jobYears = 3;
-
-        // Act
-        Employee employee = new Employee(firstName,lastName,description,jobYears);
-
-        // Assert
-        assertEquals(firstName, employee.getFirstName());
-    }
-
-    public static Stream<Arguments> provideInvalidFirstName() {
+    public static Stream<Arguments> provideInvalidArguments() {
         return Stream.of(
-                arguments(null, "First name cannot be empty!"),
-                arguments("", "First name cannot be empty!"),
-                arguments(" ", "First name cannot be empty!")
-        );
+                arguments(null,"Baggins","Ring Bearer",3,"First name cannot be empty!"),
+                arguments("","Baggins","Ring Bearer",3,"First name cannot be empty!"),
+                arguments(" ","Baggins","Ring Bearer",3,"First name cannot be empty!"),
+                arguments("Frodo",null,"Ring Bearer",3,"Last name cannot be empty!"),
+                arguments("Frodo","","Ring Bearer",3,"Last name cannot be empty!"),
+                arguments("Frodo"," ","Ring Bearer",3,"Last name cannot be empty!"),
+                arguments("Frodo","Baggins",null,3,"Description cannot be empty!"),
+                arguments("Frodo","Baggins","",3,"Description cannot be empty!"),
+                arguments("Frodo","Baggins"," ",3,"Description cannot be empty!"),
+                arguments("Frodo","Baggins","Ring Bearer",-1,"Insert a valid number of job years."),
+                arguments("Frodo","Baggins","Ring Bearer",101,"Insert a valid number of job years.")
+                );
     }
     @ParameterizedTest
-    @MethodSource("provideInvalidFirstName")
-    void testInvalidFirstNames(String firstName, String expectedMessage) throws IllegalArgumentException {
-        // Arrange
-        String lastName = "Baggins";
-        String description = "Ring Bearer";
-        int jobYears = 3;
+    @MethodSource("provideInvalidArguments")
+    void testInvalidArguments(String firstName,String lastName, String description, int jobYears, String expectedMessage) throws IllegalArgumentException {
 
         // Act + Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             new Employee(firstName,lastName,description,jobYears);
         });
         assertEquals(expectedMessage, exception.getMessage());
+    }
+~~~ 
+
+The following examples demonstrate tests for the setter methods of the Employee class attributes.For each attribute, I’ve included two tests:
+one that uses valid values to ensure the setter updates the attribute correctly, and another that uses invalid values to verify that the appropriate exception is thrown.
+For the String type attributes, tests are focused on handling null and empty values, while for the int type attribute, tests ensure that the job years fall within an acceptable range (e.g., between 0 and 100).
+
+Below is an example of a test for setting a valid value for job years, followed by a test that verifies invalid job years trigger the appropriate exception.
+
+~~~
+    @Test
+    void testSetJobYears_ValidValue() {
+        //arrange
+        Employee employee = new Employee();
+        //act
+        employee.setJobYears(5);
+        //assert
+        assertEquals(5, employee.getJobYears());
+    }
+    @Test
+    void testSetJobYears_InvalidValue() {
+        Employee employee = new Employee();
+
+        assertAll(
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setJobYears(-1)),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setJobYears(101))
+        );
     }
 ~~~ 
 
@@ -309,19 +319,21 @@ git add .
 git commit -m "Added validations and tests to Employee (related to issue #1)"
 git push
 ~~~
-I also needed to add a new tag to indicate that this part was completed. For this I ran the following commands:
+I also needed to add a new tag to indicate that this part was completed. As I learned that tags can be annotated, I started adding´notes related to the commit I was 
+linking the tag with. For this I ran the following commands:
 
 ~~~
-git tag v1.2.0
-git push
+git tag v1.2.0 -m "Employee validations and tests"
+git push origin v1.2.0
 ~~~
+I also learned that using ``git show <NameOfTag>`` allows me to see all the details related to the specific tag.
 
 To finalise, it was intended for me to send this README file as proper documentation for this part. So, I added a new commit and marked it with the tag *ca1-part1.1*.
 
 ~~~
 git add .
 git commit -m "Updated README file (related to issue #2)."
-git tag ca1-part1.1
+git tag ca1-part1.1 -m "Updated the ReadMe file for part 1.1"
 git push
 git push origin ca1-part1.1
 ~~~

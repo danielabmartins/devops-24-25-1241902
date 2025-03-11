@@ -21,25 +21,12 @@ class EmployeeTest {
 
         // Assert
         assertNotNull(employee);
+        assertEquals("Frodo", employee.getFirstName());
+        assertEquals("Baggins",employee.getLastName());
+        assertEquals("Ring Bearer", employee.getDescription());
+        assertEquals(3,employee.getJobYears());
     }
 
-    public static Stream<Arguments> provideValidArguments() {
-        return Stream.of(
-                arguments("Frodo","Baggins","Ring Bearer",3),
-                arguments("Bilbo","Baggins","Adventurer",5)
-        );
-    }
-    @ParameterizedTest
-    @MethodSource("provideValidArguments")
-    void testValidArguments(String firstName,String lastName, String description, int jobYears) {
-        // Arrange
-
-        // Act
-        Employee employee = new Employee(firstName,lastName,description,jobYears);
-
-        // Assert
-        assertNotNull(employee);
-    }
 
     public static Stream<Arguments> provideInvalidArguments() {
         return Stream.of(
