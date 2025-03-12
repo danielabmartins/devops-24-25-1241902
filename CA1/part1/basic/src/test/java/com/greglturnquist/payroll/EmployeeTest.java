@@ -42,10 +42,14 @@ class EmployeeTest {
                 arguments("Frodo","Baggins"," ",3,"frodobaggins@shiremail.com","Description cannot be empty!"),
                 arguments("Frodo","Baggins","Ring Bearer",-1,"frodobaggins@shiremail.com","Insert a valid number of job years."),
                 arguments("Frodo","Baggins","Ring Bearer",101,"frodobaggins@shiremail.com","Insert a valid number of job years."),
-                arguments("Frodo","Baggins","Ring Bearer",3, null,"Insert a valid number of job years."),
-                arguments("Frodo","Baggins","Ring Bearer",3,"","Insert a valid number of job years."),
-                arguments("Frodo","Baggins","Ring Bearer",3," ","Insert a valid number of job years.")
-                );
+                arguments("Frodo","Baggins","Ring Bearer",3, null,"Insert a valid email!"),
+                arguments("Frodo","Baggins","Ring Bearer",3,"","Insert a valid email!"),
+                arguments("Frodo","Baggins","Ring Bearer",3," ","Insert a valid email!"),
+                arguments("Frodo", "Baggins", "Ring Bearer", 3, "frodobaggins.shiremail.com", "Insert a valid email!"),
+                arguments("Frodo", "Baggins", "Ring Bearer", 3, "frodobaggins@", "Insert a valid email!"),
+                arguments("Frodo", "Baggins", "Ring Bearer", 3, "@shiremail.com", "Insert a valid email!"),
+                arguments("Frodo", "Baggins", "Ring Bearer", 3, "frodo@@shiremail.com", "Insert a valid email!")
+        );
     }
     @ParameterizedTest
     @MethodSource("provideInvalidArguments")
@@ -157,7 +161,11 @@ class EmployeeTest {
         assertAll(
                 () -> assertThrows(IllegalArgumentException.class, () -> employee.setEmail(null)),
                 () -> assertThrows(IllegalArgumentException.class, () -> employee.setEmail("")),
-                () -> assertThrows(IllegalArgumentException.class, () -> employee.setEmail(" "))
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setEmail(" ")),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setEmail("frodobaggins.shiremail.com")),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setEmail("frodobaggins@")),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setEmail("@shiremail.com")),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setEmail("frodo@@shiremail.com"))
         );
     }
 }

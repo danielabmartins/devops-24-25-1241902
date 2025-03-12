@@ -58,8 +58,9 @@ public class Employee {
 		}
 
 		if(isEmailInvalid(email)){
-			throw new IllegalArgumentException("Email cannot be empty!");
+			throw new IllegalArgumentException("Insert a valid email!");
 		}
+
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.description = description;
@@ -86,7 +87,7 @@ public class Employee {
 	}
 
 	private boolean isEmailInvalid(String email) {
-		return email == null || email.isBlank();
+		return email == null || email.isBlank() || !email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
 	}
 
 
@@ -165,7 +166,7 @@ public class Employee {
 
 	public void setEmail(String email) {
 		if(isEmailInvalid(email))
-			throw new IllegalArgumentException("Email cannot be empty!");
+			throw new IllegalArgumentException("Insert a valid email!");
 		this.email = email;
 	}
 
