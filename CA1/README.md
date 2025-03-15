@@ -556,7 +556,8 @@ tags I have used so far:
  *Issues* was the perfect tool to keep me organised and to keep track of what needed to be done. During the first part
 of this assignment (part1.1) I closed all the issues manually. However, I then learned that I can close them automatically
 using the commit messages. This approach is much simpler and easier to see the history of the problem and how it was
-solved. The picture below exemplifies some of the issues I created for this project.
+solved. For this assignment I am also tagging every issue with 'CA1' as to help me organise my work.
+ The picture below exemplifies some of the issues I created for this project.
 
 ![part1issues.png](images/part1issues.png)
 
@@ -564,3 +565,121 @@ solved. The picture below exemplifies some of the issues I created for this proj
 This section gives a clear view of how the application evolved, with new features added, branches used for development,
 and milestones marked with tags. The visuals provided show how version control works and how the project grew over time. 
 Using issues also helped keep everything organised and easy to follow, making sure all the changes are well-documented.
+
+
+### Alternative to Git
+
+As an alternative technological solution for version control, I looked into Mercurial.
+
+> Mercurial is a free, distributed source control management tool. It efficiently handles projects of any size and offers an easy and intuitive interface.
+>                                   [Mercurial](https://www.mercurial-scm.org/)
+
+In this section, I am going to analyse how Mercurial compares to Git regarding their version control features and how Mercurial
+could have been used to solve the requirements of this assignment.
+
+**Comparing Mercurial and Git** 
+
+| Feature                     | Mercurial                                                                                                                                                                       | Git                                                                                                                        |
+|-----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| History and Revision        | Mercurial tracks history with SHA-1 hashes in a linear manner and enforces stricter history integrity.                                                                          | Git uses hash IDs for efficient history tracking and allows history modification with commands like rebase                 |
+| Branching and Merging       | Mercurial supports branching with named and anonymous branches, offering easy merging but fewer flexible tools. Named branches in Mercurial are permanent and can't be deleted. | Git offers lightweight branching with easy creation, merging, and deletion, allowing branches to be recreated without issues. |
+| Architecture                | Mercurial is distributed, with each user having a local copy of the entire repository.                                                                                          | Git is also a distributed version control system, where each user has a full copy of the repository and its history.       |
+| Collaboration Features      | Mercurial lacks built-in pull request support, but tools like Bitbucket and Source                                                                                              | Git uses pull requests for collaboration and has a stronger ecosystem of collaboration tools, widely used in open-source and enterprise projects                                                                                                                  |
+| Performance and Scalability | Mercurial is fast but may not perform as efficiently with very large repositories.                                                                                              | Git is fast with large repositories and scales well for teams, especially with high-volume changes.|
+| Ease of Use                 | Mercurial is easier for beginners due to its simpler command set, though it is less powerful.| Git has a steeper learning curve due to its powerful commands but offers great flexibility once mastered                                                                                                                  |
+
+
+**Using Mercurial in the Assignment**
+
+If I were to use this alternative in my assignment, here's a small explanation of how that could work.
+
+- **Repository setup and Import:**
+
+To set up the new Mercurial repository for the basic folder, I initialised the repository and added 
+the necessary files. Then, I set up a remote repository and pushed the local changes to it. 
+Whilst this process is quite similar to Git, Mercurial simplifies things by treating every clone as a full repository,
+making distributed version control straightforward to manage.
+
+~~~shell
+# Create a new Mercurial repository
+mkdir /path/to/devops-24-25-1241902
+cd /path/to/devops-24-25-1241902
+hg init
+
+# Copy the 'basic' folder into the new repository (assuming extraction)
+cp -r /path/to/TutorialReactSpringDataREST/basic .
+
+# Add files to Mercurial tracking
+hg add
+
+# Commit the initial files
+hg commit -m "Initial commit with 'basic' folder extracted from Tutorial application"
+~~~
+
+- **Feature Development and Branch Management:**
+
+In Mercurial, creating a new branch is very straightfoward. With my repository created, I can do the following commands to
+create a new branch for the new features.
+
+~~~shell
+#Creating a new branch: email-field
+hg branch email-field
+~~~
+
+- **Committing and Tagging:**
+
+Once all the changes were added, I can commit them to the email-field branch. I am also able to use tags to ensure stable releases. Mercurial
+automatically commits the tags added so there is no need for an extra step.
+
+~~~shell
+#Committing the changes
+hg commit -m "Added email field to the assignment"
+
+#Pushing the new branch to the remote repository
+hg push
+
+#Tagging
+hg tag v1.0.0
+
+#Pushing to the remote repository
+hg push --tags
+~~~
+
+- **Merging Features and Wrapping up** 
+
+Once the feature development is complete and thoroughly tested, they can be merged back into the default (Mercurial's version of the main branch).
+To do this, I need to move back to the default branch and merge the new feature branch into it. 
+
+~~~shell
+#Moving to the default branch
+hg update default
+
+#Merging the email-field branch
+hg merge email-field
+
+#Committing the merge
+hg commit -m "Merging email-field feature into default"
+
+#Pushing to the remote repository
+hg push
+~~~
+
+In summary, Mercurial is a good alternative to Git, as it offers most of the same features such as branching, merging changes, tagging stable 
+releases, and pushing updates to a remote repository. Its simple, beginner-friendly approach means I don’t feel overwhelmed using it,
+making Mercurial a great option for managing version control.
+
+--- 
+### **Conclusion**
+
+Using the Version Control with Git assignment in **Part1.1** helped me gain a solid understanding of version control systems. 
+I worked with the master branch, commited changes, and tagged releases, which laid the groundwork for managing project changes effectively.
+
+**Part1.2** allowed me to explore branching so that I could work on features and bug fixes separately. With this, I was able to keep the project
+history clean, isolate changes and merge them back into the main branch effortlessly. 
+
+In the **Final Results** I was able to see how these principles are applied in software development. I integrated new features, maintained
+stable version and prepared the project for deployment. Git allowed to easily keep track of the changed that I made and ensured a smooth
+development process.
+
+When trying out an **Alternative to Git**, I discovered that Mercurial is a good alternative as it offers almost the same tools. This version
+control is simple and easier to use but still stands as a good alternative. Using both gave me a broader perspective on these systems and their role.
