@@ -32,6 +32,7 @@ public class Employee {
 	private String firstName;
 	private String lastName;
 	private String description;
+	private String jobTitle;
 	private int jobYears;
 	private String email;
 
@@ -39,7 +40,7 @@ public class Employee {
 	protected Employee() {
 	}
 
-	public Employee(String firstName, String lastName, String description, int jobYears, String email) {
+	public Employee(String firstName, String lastName, String description, String jobTitle, int jobYears, String email) {
 
 		if(isFirstNameInvalid(firstName)){
 			throw new IllegalArgumentException("First name cannot be empty!");
@@ -53,6 +54,10 @@ public class Employee {
 			throw new IllegalArgumentException("Description cannot be empty!");
 		}
 
+		if(isJobTitleInvalid(jobTitle)){
+			throw new IllegalArgumentException("Job title cannot be empty!");
+		}
+
 		if (areJobYearsInvalid(jobYears)){
 			throw new IllegalArgumentException("Insert a valid number of job years.");
 		}
@@ -64,6 +69,7 @@ public class Employee {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.description = description;
+		this.jobTitle = jobTitle;
 		this.jobYears = jobYears;
 		this.email = email;
 
@@ -79,6 +85,10 @@ public class Employee {
 
 	private boolean isDescriptionInvalid (String description) {
 		return description == null || description.isBlank();
+	}
+
+	private boolean isJobTitleInvalid (String jobTitle) {
+		return jobTitle == null || jobTitle.isBlank();
 	}
 
 	private boolean areJobYearsInvalid(int jobYears) {
@@ -100,6 +110,7 @@ public class Employee {
 			Objects.equals(firstName, employee.firstName) &&
 			Objects.equals(lastName, employee.lastName) &&
 			Objects.equals(description, employee.description) &&
+			Objects.equals(jobTitle, employee.jobTitle) &&
 			Objects.equals(jobYears, employee.jobYears) &&
 			Objects.equals(email,employee.email);
 	}
@@ -107,7 +118,7 @@ public class Employee {
 	@Override
 	public int hashCode() {
 
-		return Objects.hash(id, firstName, lastName, description, jobYears, email);
+		return Objects.hash(id, firstName, lastName, description, jobTitle, jobYears, email);
 	}
 
 	public Long getId() {
@@ -150,6 +161,17 @@ public class Employee {
 		this.description = description;
 	}
 
+	public String getJobTitle(){
+		return jobTitle;
+	}
+
+	public void setJobTitle(String jobTitle) {
+		if(isJobTitleInvalid(jobTitle))
+			throw new IllegalArgumentException("Job title cannot be empty!");
+
+		this.jobTitle = jobTitle;
+	}
+
 	public int getJobYears(){
 		return jobYears;
 	}
@@ -177,6 +199,7 @@ public class Employee {
 			", firstName='" + firstName + '\'' +
 			", lastName='" + lastName + '\'' +
 			", description='" + description + '\'' +
+			", jobTtile='" + jobTitle + '\'' +
 			", jobYears='" + jobYears +
 			", email='" + email + '\'' +
 			'}';

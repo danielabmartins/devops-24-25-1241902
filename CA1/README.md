@@ -144,6 +144,10 @@ neither null nor empty. For Job Years, an int type, I decided to restrict the va
 	private boolean isDescriptionInvalid (String description) {
 		return description == null || description.isBlank();
 	}
+    
+    private boolean isJobTitleInvalid (String jobTitle) {
+        return jobTitle == null || jobTitle.isBlank();
+    }
 
 	private boolean areJobYearsInvalid(int jobYears) {
 		
@@ -166,7 +170,11 @@ an Employee.
 
 		if(isDescriptionInvalid(description)){
 			throw new IllegalArgumentException("Description cannot be empty!");
-		}
+        }
+        
+        if(isJobTitleInvalid(jobTitle)){
+            throw new IllegalArgumentException("Job title cannot be empty!");
+        }
 
 		if (areJobYearsInvalid(jobYears)){
 			throw new IllegalArgumentException("Insert a valid number of job years.");
@@ -175,7 +183,8 @@ an Employee.
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.description = description;
-		this.jobYears = jobYears;
+        this.jobTitle = jobTitle;
+        this.jobYears = jobYears;
 
 	}
 ~~~
@@ -191,39 +200,43 @@ The tests focus on verifying the functionality of the Employee constructor and e
         //Arrange
 
         // Act
-        Employee employee = new Employee("Frodo", "Baggins", "Ring Bearer", 3);
+        Employee employee = new Employee("Frodo", "Baggins", "Ring Bearer","Adventurer", 3);
 
         // Assert
         assertNotNull(employee);
         assertEquals("Frodo", employee.getFirstName());
         assertEquals("Baggins",employee.getLastName());
         assertEquals("Ring Bearer", employee.getDescription());
+        assertEquals("Adventurer",employee.getJobTitle());
         assertEquals(3,employee.getJobYears());
     }
     
 
     public static Stream<Arguments> provideInvalidArguments() {
         return Stream.of(
-                arguments(null,"Baggins","Ring Bearer",3,"First name cannot be empty!"),
-                arguments("","Baggins","Ring Bearer",3,"First name cannot be empty!"),
-                arguments(" ","Baggins","Ring Bearer",3,"First name cannot be empty!"),
-                arguments("Frodo",null,"Ring Bearer",3,"Last name cannot be empty!"),
-                arguments("Frodo","","Ring Bearer",3,"Last name cannot be empty!"),
-                arguments("Frodo"," ","Ring Bearer",3,"Last name cannot be empty!"),
-                arguments("Frodo","Baggins",null,3,"Description cannot be empty!"),
-                arguments("Frodo","Baggins","",3,"Description cannot be empty!"),
-                arguments("Frodo","Baggins"," ",3,"Description cannot be empty!"),
-                arguments("Frodo","Baggins","Ring Bearer",-1,"Insert a valid number of job years."),
-                arguments("Frodo","Baggins","Ring Bearer",101,"Insert a valid number of job years.")
-                );
+                arguments(null,"Baggins","Ring Bearer","Adventurer",3,"First name cannot be empty!"),
+                arguments("","Baggins","Ring Bearer","Adventurer", 3,"First name cannot be empty!"),
+                arguments(" ","Baggins","Ring Bearer","Adventurer", 3,"First name cannot be empty!"),
+                arguments("Frodo",null,"Ring Bearer","Adventurer", 3,"Last name cannot be empty!"),
+                arguments("Frodo","","Ring Bearer","Adventurer", 3,"Last name cannot be empty!"),
+                arguments("Frodo"," ","Ring Bearer","Adventurer",3,"Last name cannot be empty!"),
+                arguments("Frodo","Baggins",null,"Adventurer",3,"Description cannot be empty!"),
+                arguments("Frodo","Baggins","","Adventurer",3,"Description cannot be empty!"),
+                arguments("Frodo","Baggins"," ","Adventurer",3,"Description cannot be empty!"),
+                arguments("Frodo", "Baggins", "Ring Bearer",null,3, "Job title cannot be empty!"),
+                arguments("Frodo", "Baggins", "Ring Bearer","",3, "Job title cannot be empty!"),
+                arguments("Frodo", "Baggins", "Ring Bearer"," ",3, "Job title cannot be empty!"),
+                arguments("Frodo","Baggins","Ring Bearer","Adventurer",-1,"Insert a valid number of job years."),
+                arguments("Frodo","Baggins","Ring Bearer","Adventurer",101,"Insert a valid number of job years.")
+        ); 
     }
     @ParameterizedTest
     @MethodSource("provideInvalidArguments")
-    void testInvalidArguments(String firstName,String lastName, String description, int jobYears, String expectedMessage) throws IllegalArgumentException {
+    void testInvalidArguments(String firstName,String lastName, String description, String jobTitle, int jobYears, String expectedMessage) throws IllegalArgumentException {
 
         // Act + Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Employee(firstName,lastName,description,jobYears);
+            new Employee(firstName,lastName,description,jobTitle,jobYears);
         });
         assertEquals(expectedMessage, exception.getMessage());
     }
@@ -264,7 +277,7 @@ number of years each employee has worked, enabling the application to showcase t
 ~~~java
 	@Override
 	public void run(String... strings) throws Exception { // <4>
-		this.repository.save(new Employee("Frodo", "Baggins", "ring bearer",3));
+		this.repository.save(new Employee("Frodo", "Baggins", "ring bearer","Adventurer",3));
 	}
 ~~~
 
@@ -286,7 +299,8 @@ class EmployeeList extends React.Component{
 					<th>First Name</th>
 					<th>Last Name</th>
 					<th>Description</th>
-					<th>Job Years</th>
+					<th>Job Title</th>
+                    <th>Job Years</th>
 				</tr>
 				{employees}
 				</tbody>
@@ -304,7 +318,8 @@ class Employee extends React.Component{
 				<td>{this.props.employee.firstName}</td>
 				<td>{this.props.employee.lastName}</td>
 				<td>{this.props.employee.description}</td>
-				<td>{this.props.employee.jobYears}</td>
+				<td>{this.props.employee.jobTitle}</td>
+                <td>{this.props.employee.jobYears}</td>
 
 			</tr>
 		)
@@ -514,8 +529,13 @@ At the end of these two parts of the Class Assignment 1, the application looked 
 ![part1application.png](images/part1application.png)
 
 While the first three fields (First Name, Last Name, and Description) were already part of the model, I added the
-**Job Years** and **Email** sections in this project. These additions provide a more complete and detailed view of 
-what makes up an Employee.
+**Job Years** and **Email** sections in this project. The part *Job Title* was intended to be added during the introduction/demonstration
+of this project. Due to a smaller issue, I was only able to add it once I was finishing part1.2 of this assignment. Therefore,
+I went back and added the field to all the classes necessary and updated all the methods. I also updated this ReadMe file
+and all the examples provided as to illustrated what was required. This version was tagged with ```v1.1.1``` as it should have been a 
+follow-up on that section.
+
+These additions provide a more complete and detailed view of what makes up an Employee.
 
 - **Branches**
 The branches created can still be found in the repository using the command ``git branch`` and the * symbol indicates
@@ -529,6 +549,7 @@ myself and this assignment whilst marking specific points of its history as sign
 tags I have used so far:
 
 ![part1tags.png](images/part1tags.png)
+
 
 - **Issues** 
 

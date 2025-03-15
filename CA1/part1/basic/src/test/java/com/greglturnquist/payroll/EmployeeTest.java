@@ -17,13 +17,14 @@ class EmployeeTest {
         //Arrange
 
         // Act
-        Employee employee = new Employee("Frodo", "Baggins", "Ring Bearer", 3,"frodobaggins@shiremail.com");
+        Employee employee = new Employee("Frodo", "Baggins", "Ring Bearer","Adventurer", 3,"frodobaggins@shiremail.com");
 
         // Assert
         assertNotNull(employee);
         assertEquals("Frodo", employee.getFirstName());
         assertEquals("Baggins",employee.getLastName());
         assertEquals("Ring Bearer", employee.getDescription());
+        assertEquals("Adventurer", employee.getJobTitle());
         assertEquals(3,employee.getJobYears());
         assertEquals("frodobaggins@shiremail.com",employee.getEmail());
     }
@@ -31,33 +32,36 @@ class EmployeeTest {
 
     public static Stream<Arguments> provideInvalidArguments() {
         return Stream.of(
-                arguments(null,"Baggins","Ring Bearer",3,"frodobaggins@shiremail.com","First name cannot be empty!"),
-                arguments("","Baggins","Ring Bearer",3,"frodobaggins@shiremail.com","First name cannot be empty!"),
-                arguments(" ","Baggins","Ring Bearer",3,"frodobaggins@shiremail.com","First name cannot be empty!"),
-                arguments("Frodo",null,"Ring Bearer",3,"frodobaggins@shiremail.com","Last name cannot be empty!"),
-                arguments("Frodo","","Ring Bearer",3,"frodobaggins@shiremail.com","Last name cannot be empty!"),
-                arguments("Frodo"," ","Ring Bearer",3,"frodobaggins@shiremail.com","Last name cannot be empty!"),
-                arguments("Frodo","Baggins",null,3,"frodobaggins@shiremail.com","Description cannot be empty!"),
-                arguments("Frodo","Baggins","",3,"frodobaggins@shiremail.com","Description cannot be empty!"),
-                arguments("Frodo","Baggins"," ",3,"frodobaggins@shiremail.com","Description cannot be empty!"),
-                arguments("Frodo","Baggins","Ring Bearer",-1,"frodobaggins@shiremail.com","Insert a valid number of job years."),
-                arguments("Frodo","Baggins","Ring Bearer",101,"frodobaggins@shiremail.com","Insert a valid number of job years."),
-                arguments("Frodo","Baggins","Ring Bearer",3, null,"Insert a valid email!"),
-                arguments("Frodo","Baggins","Ring Bearer",3,"","Insert a valid email!"),
-                arguments("Frodo","Baggins","Ring Bearer",3," ","Insert a valid email!"),
-                arguments("Frodo", "Baggins", "Ring Bearer", 3, "frodobaggins.shiremail.com", "Insert a valid email!"),
-                arguments("Frodo", "Baggins", "Ring Bearer", 3, "frodobaggins@", "Insert a valid email!"),
-                arguments("Frodo", "Baggins", "Ring Bearer", 3, "@shiremail.com", "Insert a valid email!"),
-                arguments("Frodo", "Baggins", "Ring Bearer", 3, "frodo@@shiremail.com", "Insert a valid email!")
+                arguments(null,"Baggins","Ring Bearer","Adventurer",3,"frodobaggins@shiremail.com","First name cannot be empty!"),
+                arguments("","Baggins","Ring Bearer","Adventurer", 3,"frodobaggins@shiremail.com","First name cannot be empty!"),
+                arguments(" ","Baggins","Ring Bearer","Adventurer", 3,"frodobaggins@shiremail.com","First name cannot be empty!"),
+                arguments("Frodo",null,"Ring Bearer","Adventurer", 3,"frodobaggins@shiremail.com","Last name cannot be empty!"),
+                arguments("Frodo","","Ring Bearer","Adventurer", 3,"frodobaggins@shiremail.com","Last name cannot be empty!"),
+                arguments("Frodo"," ","Ring Bearer","Adventurer",3,"frodobaggins@shiremail.com","Last name cannot be empty!"),
+                arguments("Frodo","Baggins",null,"Adventurer",3,"frodobaggins@shiremail.com","Description cannot be empty!"),
+                arguments("Frodo","Baggins","","Adventurer",3,"frodobaggins@shiremail.com","Description cannot be empty!"),
+                arguments("Frodo","Baggins"," ","Adventurer",3,"frodobaggins@shiremail.com","Description cannot be empty!"),
+                arguments("Frodo", "Baggins", "Ring Bearer",null,3, "frodo@shiremail.com", "Job title cannot be empty!"),
+                arguments("Frodo", "Baggins", "Ring Bearer","",3, "frodo@shiremail.com", "Job title cannot be empty!"),
+                arguments("Frodo", "Baggins", "Ring Bearer"," ",3, "frodo@shiremail.com", "Job title cannot be empty!"),
+                arguments("Frodo","Baggins","Ring Bearer","Adventurer",-1,"frodobaggins@shiremail.com","Insert a valid number of job years."),
+                arguments("Frodo","Baggins","Ring Bearer","Adventurer",101,"frodobaggins@shiremail.com","Insert a valid number of job years."),
+                arguments("Frodo","Baggins","Ring Bearer","Adventurer",3, null,"Insert a valid email!"),
+                arguments("Frodo","Baggins","Ring Bearer","Adventurer",3,"","Insert a valid email!"),
+                arguments("Frodo","Baggins","Ring Bearer","Adventurer", 3," ","Insert a valid email!"),
+                arguments("Frodo", "Baggins", "Ring Bearer","Adventurer", 3, "frodobaggins.shiremail.com", "Insert a valid email!"),
+                arguments("Frodo", "Baggins", "Ring Bearer","Adventurer", 3, "frodobaggins@", "Insert a valid email!"),
+                arguments("Frodo", "Baggins", "Ring Bearer","Adventurer", 3, "@shiremail.com", "Insert a valid email!"),
+                arguments("Frodo", "Baggins", "Ring Bearer","Adventurer", 3, "frodo@@shiremail.com", "Insert a valid email!")
         );
     }
     @ParameterizedTest
     @MethodSource("provideInvalidArguments")
-    void testInvalidArguments(String firstName,String lastName, String description, int jobYears, String email, String expectedMessage) throws IllegalArgumentException {
+    void testInvalidArguments(String firstName,String lastName, String description, String jobTitle, int jobYears, String email, String expectedMessage) throws IllegalArgumentException {
 
         // Act + Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Employee(firstName,lastName,description,jobYears,email);
+            new Employee(firstName,lastName,description,jobTitle,jobYears,email);
         });
         assertEquals(expectedMessage, exception.getMessage());
     }
@@ -125,6 +129,26 @@ class EmployeeTest {
         );
     }
 
+    @Test
+    void testSetJobTitle_ValidValue() {
+        //arrange
+        Employee employee = new Employee();
+        //act
+        employee.setJobTitle("Adventurer");
+        //assert
+        assertEquals("Adventurer",employee.getJobTitle());
+    }
+
+    @Test
+    void testSetJobTitle_InvalidValue() {
+        Employee employee = new Employee();
+
+        assertAll(
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setJobTitle(null)),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setJobTitle("")),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setJobTitle(" "))
+        );
+    }
 
     @Test
     void testSetJobYears_ValidValue() {
