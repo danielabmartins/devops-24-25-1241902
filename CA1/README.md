@@ -6,11 +6,16 @@
 
 ### **Introduction**
 
-This DevOps project is divided into two parts... 
+This DevOps assignment is divided into two parts. The first part explores the Version Control with Git and includes an 
+alternative to Git. The second part explores Build Tools with Gradle.
 
 Part 1 was also divided into three parts. The first, is intended to work without branches, the second relies on the use
-of branches and the third, and final, explores an alternative solution to git.
+of branches and the third, and final, explores an alternative solution to Git.
 
+Part 2 follows the topic of using build tools with Gradle, focusing on its practical applications.
+
+---
+##  Part 1
 
 ### The Setup
 Due to the nature of this project some configurations and changes needed to be made so that the application runs smoothly.
@@ -683,3 +688,223 @@ development process.
 
 When trying out an **Alternative to Git**, I discovered that Mercurial is a good alternative as it offers almost the same tools. This version
 control is simple and easier to use but still stands as a good alternative. Using both gave me a broader perspective on these systems and their role.
+
+---
+##  Part 2
+
+### The Setup
+
+This project covers the work done in the DevOps course assignment, where I explored using Gradle as a build tool. The assignment includes a series
+of tasks that give hands-on experience with Gradle, starting with the basics like setting it up, and moving on to more advanced features such as 
+creating tasks and running unit tests.
+After setting up the environment, the report goes on to explain the development of the Gradle Basic Demo, a multithreaded chat server. 
+This section highlights the steps involved in building, launching, and connecting multiple clients to the server.
+
+I started by setting up a new directory for the assignment, called /CA2/part2, and cloned the example application from the provided Bitbucket repository.
+This repository contained a build.gradle file and included the Gradle Wrapper to maintain a consistent environment. Once everything was installed,
+I checked if Gradle was correctly set up by running ``gradle -v`` in the terminal. This command also allows me to see which version of Gradle I am using at the 
+moment.
+
+### Gradle Basic Demo
+Once everything was set up properly, I studied the ReadMe file attached to the example application I copied before. This example also provided
+a Gradle Basic Demo that allowed me to explore a multithreaded chat server. In order to make the most out of this practical exercise, I executed
+the following steps:
+
+- **Build Process:**
+
+To start out, I needed to prepare the demo for execution. I executed the command ``./gradlew build`` from the root directory. This compiled the source
+code and packaged it into an executable .jar file as seen in the image below:
+
+![part2demoexecution.png](images/part2demoexecution.png)
+
+- **Server Startup:**
+
+The next step was to launch the chat server. For this, I used the command ``  java -cp build/libs/basic_demo-0.1.0.jar basic_demo.ChatServerApp 59001`` 
+and, as seen in the image, it started to run and wait for client connections.
+
+![part2chatserver.png](images/part2chatserver.png)
+
+- **Client Connections:**
+
+Now that the Server was running, I needed to initiate the client side. For this, I ran the command ``` ./gradlew runClient```
+to ensure that each client would be connected to localhost on port 59001. Once this was ready, a chatbox popped up prompting
+the Client to write their name.
+
+![part2chatter.png](images/part2chatter.png)
+
+Since this server can easily manage multiple clients, I created a second client using another terminal window and tested
+a conversation between the two Clients.
+
+![part2chatter2people.png](images/part2chatter2people.png)
+
+And whilst the Client side was running, the Server side kept updating whenever a new Client used the application:
+
+![part2chatserverupdated.png](images/part2chatserverupdated.png)
+
+### Adding a new Task
+
+Once I finished the Demo provided, it was time to start working on the application and improve it with the required tasks.
+
+The first task was added to avoid the need for manual command-line input whenever we wanted the server to start. For this, I
+added a ``runServer`` to the file ``build.gradle``. This improved the development process by streamlining the server startup.
+Now, it is possible to launch the chat server directly with the Gradle command ``./gradlew runServer.`` 
+
+The *runServer* task is defined as a JavaExec type to run Java applications. It has a dependency on the classes task
+to ensure that all necessary classes are compiled before starting the server. Additionally, it’s set up to run the ChatServerApp main class on port 59001.
+
+~~~groovy
+task runServer(type: JavaExec, dependsOn: classes) {
+    group = "DevOps"
+    description = "Launches the chat server on port 59001"
+
+    classpath = sourceSets.main.runtimeClasspath
+
+    mainClass = 'basic_demo.ChatServerApp'
+
+    args '59001'
+}
+~~~
+
+After this update, I needed to execute the task using ``./gradlew runServer`` in the command line.The terminal provided
+immediate confirmation of the task’s success with the server running as expected. This addition improved the development
+workflow by reducing the steps needed to start the server, and thus, simplifying the process.
+
+![part2runServerTaskRunning.png](images/part2runServerTaskRunning.png)
+
+Once everything was running smoothly, I commited the changed to the repository and closed the issue related to this task.
+~~~shell 
+git commit -m "Created Gradle task to run the server. Closes #11"
+~~~ 
+
+### Adding a unit test
+
+In order to ensure the App class's functionality, I added a unit test. This test was provided beforehand, and it was placed
+in a new directory created with the command ``mkdir -p src/test/java/basic_dem ``. This  test verifies that the App
+class generates a non-null greeting message, which, while simple, is an important aspect of its functionality.
+
+~~~groovy
+package basic_demo;
+
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+public class AppTest {
+    @Test
+    public void testAppHasAGreeting() {
+        App classUnderTest = new App();
+        assertNotNull("app should have a greeting", classUnderTest.getGreeting());
+    }
+}
+
+~~~
+
+To confirm that the test environment was set up correctly, I included the JUnit dependency in the build.gradle 
+file, as it is necessary for running the unit tests. This addition ensures that the project correctly identifies and 
+runs JUnit tests without any issues.
+
+~~~groovy
+testImplementation 'junit:junit:4.12'
+~~~
+
+Next, I executed the command ``./gradlew test`` and I was able to see that the test passed successfully.
+
+![part2gradlewtest.png](images/part2gradlewtest.png)
+
+At the end of this section, I committed the changes with the command:
+
+~~~shell
+git commit -m “Fixed submodule issue, added unit test (Closes #12) and re-added CA1/part2 as a normal directory”
+~~~
+
+*Disclaimer:* Due to a small issue with the submodule, I needed to do some tweaks to ensure the application ran properly and my
+assignment was working.
+
+### Adding a Copy type task
+
+The next step was to add a new task of type **Copy** to the build.gradle file, which creates a backup of the source code
+to provide a reliable recovery point in case any unexpected issues arise during development. This backup task is used
+to duplicate the contents of the src directory into a designated backup location within the project. 
+This step is crucial for ensuring we have an up-to-date snapshot of the codebase, particularly before implementing
+major changes or updates.
+
+~~~groovy
+task backup(type: Copy) {
+    group = "DevOps"
+    description = "Copies the sources of the application to a backup folder"
+
+    from 'src'
+    into 'backup'
+}
+~~~
+To verify the task was working correctly, I executed the command associated with it. I ran ```./gradlew backup```
+from the command line and confirmed its successful execution. The output shows that the source code was properly
+copied to the backup location, demonstrating that the task effectively protects the project’s code.
+
+![part2gradlewbackup.png](images/part2gradlewbackup.png)
+
+This also resulted in the creation of a new folder named backup in my directory (**backup**), confirming that the
+backup process was completed properly. Adding the backup task to the Gradle build script has made the project more 
+resilient by making it easy and reliable to back up the code.
+
+![part2backupfolder.png](images/part2backupfolder.png)
+
+Once everything was finished, I sent my changes to the repository with the message:
+
+~~~shell
+git commit -m "Added new Copy task for backup. Closes #13"
+~~~
+
+### Adding a Zip type task
+
+The last task was to create a new Zip task to package the project's source code into a compressed .zip file. 
+This task makes it easier to zip up the src directory, which is handy for backups or sharing the project. It's an
+important step for archiving project versions or preparing the code for distribution.
+
+~~~groovy
+task archive(type: Zip) {
+    group = "DevOps"
+    description = "Creates a zip archive of the source code"
+
+    from 'src'
+    archiveFileName.set('src_backup.zip')
+    destinationDirectory.set(layout.buildDirectory.dir("archives"))
+}
+~~~~
+
+Once the zip task was set up, I ran it with ```./gradlew zip.``` The terminal output confirmed the task ran smoothly,
+indicating that the src directory had been successfully compressed into a ZIP file.
+
+![part2gradlewarchive.png](images/part2gradlewarchive.png)
+
+The success of this task is evident not only in the image above but also by the presence of the ZIP file in my directory.
+
+![part2gradlewArchiveResult.png](images/part2gradlewArchiveResult.png)
+
+This final requisite was commited to the repository with the command:
+
+~~~shell
+git commit -m "Added Zip type task. Closes #14"
+~~~
+
+### Concluding
+
+Wrapping up this project has given me a much clearer understanding of how Gradle works and how useful it can be in 
+real-world development. Throughout the tasks, I got a chance to see firsthand how flexible and powerful Gradle is 
+as a build tool.
+
+The project showed how Gradle can help automate essential tasks like building projects, running tests, 
+and managing files. These features are key to keeping the development process smooth and efficient, making Gradle
+a must-have for any project.
+
+With the tasks  *runServer*, *backup*, and *archive*, I saw how easy it is to extend Gradle's functionality. These 
+tasks not only made development easier but also helped improve the project's resilience and made it easier to distribute.
+
+Integrating a unit test into the build process also highlighted how important testing is and how Gradle makes it 
+simple to include that step in the workflow. It was a good reminder of why testing is crucial for keeping code
+quality high.
+
+All in all, this project has helped me get a better grasp of Gradle and how it fits into the development process.
+The skills I’ve gained will definitely come in handy for future projects, making my workflows more efficient and reliable.
+
+
+
