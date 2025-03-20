@@ -7,12 +7,15 @@
 ### **Introduction**
 
 This DevOps assignment is divided into two parts. The first part explores the Version Control with Git and includes an 
-alternative to Git. The second part explores Build Tools with Gradle.
+alternative to Git. The second part explores Build Tools with Gradle. For the third part, we are meant to convert
+the basic tutorial of the application (from part 1) to Gradle.
 
 Part 1 was also divided into three parts. The first, is intended to work without branches, the second relies on the use
 of branches and the third, and final, explores an alternative solution to Git.
 
 Part 2 follows the topic of using build tools with Gradle, focusing on its practical applications.
+
+Part 3 aims to convert the basic version of the Tutorial application to Gradle.
 
 ---
 ##  Part 1

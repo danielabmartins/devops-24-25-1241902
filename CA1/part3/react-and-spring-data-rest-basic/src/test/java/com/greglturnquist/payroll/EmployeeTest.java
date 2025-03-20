@@ -1,0 +1,195 @@
+package com.greglturnquist.payroll;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
+
+class EmployeeTest {
+
+    @Test
+    void shouldCreateEmployee() {
+        //Arrange
+
+        // Act
+        Employee employee = new Employee("Frodo", "Baggins", "Ring Bearer","Adventurer", 3,"frodobaggins@shiremail.com");
+
+        // Assert
+        assertNotNull(employee);
+        assertEquals("Frodo", employee.getFirstName());
+        assertEquals("Baggins",employee.getLastName());
+        assertEquals("Ring Bearer", employee.getDescription());
+        assertEquals("Adventurer", employee.getJobTitle());
+        assertEquals(3,employee.getJobYears());
+        assertEquals("frodobaggins@shiremail.com",employee.getEmail());
+    }
+
+
+    public static Stream<Arguments> provideInvalidArguments() {
+        return Stream.of(
+                arguments(null,"Baggins","Ring Bearer","Adventurer",3,"frodobaggins@shiremail.com","First name cannot be empty!"),
+                arguments("","Baggins","Ring Bearer","Adventurer", 3,"frodobaggins@shiremail.com","First name cannot be empty!"),
+                arguments(" ","Baggins","Ring Bearer","Adventurer", 3,"frodobaggins@shiremail.com","First name cannot be empty!"),
+                arguments("Frodo",null,"Ring Bearer","Adventurer", 3,"frodobaggins@shiremail.com","Last name cannot be empty!"),
+                arguments("Frodo","","Ring Bearer","Adventurer", 3,"frodobaggins@shiremail.com","Last name cannot be empty!"),
+                arguments("Frodo"," ","Ring Bearer","Adventurer",3,"frodobaggins@shiremail.com","Last name cannot be empty!"),
+                arguments("Frodo","Baggins",null,"Adventurer",3,"frodobaggins@shiremail.com","Description cannot be empty!"),
+                arguments("Frodo","Baggins","","Adventurer",3,"frodobaggins@shiremail.com","Description cannot be empty!"),
+                arguments("Frodo","Baggins"," ","Adventurer",3,"frodobaggins@shiremail.com","Description cannot be empty!"),
+                arguments("Frodo", "Baggins", "Ring Bearer",null,3, "frodo@shiremail.com", "Job title cannot be empty!"),
+                arguments("Frodo", "Baggins", "Ring Bearer","",3, "frodo@shiremail.com", "Job title cannot be empty!"),
+                arguments("Frodo", "Baggins", "Ring Bearer"," ",3, "frodo@shiremail.com", "Job title cannot be empty!"),
+                arguments("Frodo","Baggins","Ring Bearer","Adventurer",-1,"frodobaggins@shiremail.com","Insert a valid number of job years."),
+                arguments("Frodo","Baggins","Ring Bearer","Adventurer",101,"frodobaggins@shiremail.com","Insert a valid number of job years."),
+                arguments("Frodo","Baggins","Ring Bearer","Adventurer",3, null,"Insert a valid email!"),
+                arguments("Frodo","Baggins","Ring Bearer","Adventurer",3,"","Insert a valid email!"),
+                arguments("Frodo","Baggins","Ring Bearer","Adventurer", 3," ","Insert a valid email!"),
+                arguments("Frodo", "Baggins", "Ring Bearer","Adventurer", 3, "frodobaggins.shiremail.com", "Insert a valid email!"),
+                arguments("Frodo", "Baggins", "Ring Bearer","Adventurer", 3, "frodobaggins@", "Insert a valid email!"),
+                arguments("Frodo", "Baggins", "Ring Bearer","Adventurer", 3, "@shiremail.com", "Insert a valid email!"),
+                arguments("Frodo", "Baggins", "Ring Bearer","Adventurer", 3, "frodo@@shiremail.com", "Insert a valid email!")
+        );
+    }
+    @ParameterizedTest
+    @MethodSource("provideInvalidArguments")
+    void testInvalidArguments(String firstName,String lastName, String description, String jobTitle, int jobYears, String email, String expectedMessage) throws IllegalArgumentException {
+
+        // Act + Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Employee(firstName,lastName,description,jobTitle,jobYears,email);
+        });
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
+    void testSetFirstName_ValidValue() {
+        //arrange
+        Employee employee = new Employee();
+        //act
+        employee.setFirstName("Bilbo");
+        //assert
+        assertEquals("Bilbo",employee.getFirstName());
+    }
+
+    @Test
+    void testSetFirstName_InvalidValue() {
+        Employee employee = new Employee();
+
+        assertAll(
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setFirstName(null)),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setFirstName("")),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setFirstName(" "))
+        );
+    }
+
+    @Test
+    void testSetLastName_ValidValue() {
+        //arrange
+        Employee employee = new Employee();
+        //act
+        employee.setLastName("Baggins");
+        //assert
+        assertEquals("Baggins",employee.getLastName());
+    }
+
+    @Test
+    void testSetLastName_InvalidValue() {
+        Employee employee = new Employee();
+
+        assertAll(
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setLastName(null)),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setLastName("")),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setLastName(" "))
+        );
+    }
+
+    @Test
+    void testSetDescription_ValidValue() {
+        //arrange
+        Employee employee = new Employee();
+        //act
+        employee.setDescription("Ring Bearer");
+        //assert
+        assertEquals("Ring Bearer",employee.getDescription());
+    }
+
+    @Test
+    void testSetDescription_InvalidValue() {
+        Employee employee = new Employee();
+
+        assertAll(
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setDescription(null)),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setDescription("")),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setDescription(" "))
+        );
+    }
+
+    @Test
+    void testSetJobTitle_ValidValue() {
+        //arrange
+        Employee employee = new Employee();
+        //act
+        employee.setJobTitle("Adventurer");
+        //assert
+        assertEquals("Adventurer",employee.getJobTitle());
+    }
+
+    @Test
+    void testSetJobTitle_InvalidValue() {
+        Employee employee = new Employee();
+
+        assertAll(
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setJobTitle(null)),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setJobTitle("")),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setJobTitle(" "))
+        );
+    }
+
+    @Test
+    void testSetJobYears_ValidValue() {
+        //arrange
+        Employee employee = new Employee();
+        //act
+        employee.setJobYears(5);
+        //assert
+        assertEquals(5, employee.getJobYears());
+    }
+    @Test
+    void testSetJobYears_InvalidValue() {
+        Employee employee = new Employee();
+
+        assertAll(
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setJobYears(-1)),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setJobYears(101))
+        );
+    }
+    @Test
+    void testSetEmail_ValidValue() {
+        //arrange
+        Employee employee = new Employee();
+        //act
+        employee.setEmail("frodobaggins@shiremail.com");
+        //assert
+        assertEquals("frodobaggins@shiremail.com",employee.getEmail());
+    }
+
+    @Test
+    void testSetEmail_InvalidValue() {
+        Employee employee = new Employee();
+
+        assertAll(
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setEmail(null)),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setEmail("")),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setEmail(" ")),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setEmail("frodobaggins.shiremail.com")),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setEmail("frodobaggins@")),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setEmail("@shiremail.com")),
+                () -> assertThrows(IllegalArgumentException.class, () -> employee.setEmail("frodo@@shiremail.com"))
+        );
+    }
+}
