@@ -45,3 +45,11 @@ tasks.register('copyJar', Copy) {
 	from bootJar.outputs
 	into file("dist")
 }
+
+tasks.register('cleanWebpack', Delete) {
+	doFirst {
+		println "Deleting Webpack build files..."
+	}
+	delete 'src/main/resources/static/built'
+}
+clean.dependsOn cleanWebpack
