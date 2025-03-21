@@ -40,3 +40,8 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+tasks.register('copyJar', Copy) {
+	dependsOn bootJar
+	from bootJar.outputs
+	into file("dist")
+}
