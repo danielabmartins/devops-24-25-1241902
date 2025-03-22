@@ -5,7 +5,15 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/CA1/part2/aprt2" />
-        <option name="gradleHome" value="" />
+        <option name="resolveExternalAnnotations" value="true" />
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/CA1/part3/react-and-spring-data-rest-basic" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/CA1/part3/react-and-spring-data-rest-basic" />
+          </set>
+        </option>
       </GradleProjectSettings>
     </option>
   </component>
