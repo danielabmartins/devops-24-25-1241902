@@ -4,7 +4,20 @@
 **Programme:** SWitCH DEV<br>
 **Course:** DevOps</br>
 
-### **Introduction**
+### Table of Contents
+
+- [Introduction](#introduction)
+- [Part 1](#part-1)
+  - [Part 1.1](#part-1-1)
+  - [Part 1.2](#part-1-2)
+  - [Part 1.3](#part-1-3)
+- [Part 2](#part-2)
+- [Part 3](#part-3)
+  - [Part 3.1](#part-3-1)
+  - [Part 3.2](#part-3-2)
+- [Conclusion](#conclusion)
+
+### Introduction
 
 This DevOps assignment is divided into two parts. The first part explores the Version Control with Git and includes an 
 alternative to Git. The second part explores Build Tools with Gradle. For the third part, we are meant to convert
@@ -15,7 +28,7 @@ of branches and the third, and final, explores an alternative solution to Git.
 
 **Part 2** follows the topic of using build tools with Gradle, focusing on its practical applications.
 
-**Part 3** aims to convert the basic version of the Tutorial application to Gradle. Its second part demonstrates an alternativa
+**Part 3** aims to convert the basic version of the Tutorial application to Gradle. Its second part demonstrates an alternative
 to Gradle, in this case Maven.
 
 ---
@@ -30,15 +43,15 @@ I will be explaining these changes in the following steps.
 We were given access to a repository containing the Tutorial React.js and Spring Data REST application. This allowed us
 to clone it and create a local copy using the following command:
 
-```shell
+```bash
 git clone https://github.com/spring-guides/tut-react-and-spring-data-rest
 ```
 
 - **Creating my repository**
 
-I then created my own repository *devops-24-25-1241902* in github to use throughout this project for all the assignments.
+I then created my own repository *devops-24-25-1241902* in GitHub to use throughout this project for all the assignments.
 Once my repository was created, I cloned it into the right folder on my computer using the command:<br>
-```shell
+```bash
 git clone <repository-URL> "C:\Users\danie\Desktop\SWitCH\2_Semestre\DevOps"
 ```
 
@@ -47,10 +60,9 @@ git clone <repository-URL> "C:\Users\danie\Desktop\SWitCH\2_Semestre\DevOps"
 In order to be able to run the application, I had to copy the basic folder inside the first repository to my own.
 I created the folder *CA1* and inside, the folder *part1*. 
 
-```shell
- cp -r "C:\Users\danie\Desktop\SWitCH\2_Semestre\DevOps\tut-react-and-spring-data-rest\basic" "C:\Users\danie\Desktop\SWitCH\2_Semestre\DevOps\devops-24-25-1241902\CA1\part1"
+```bash
+cp -r "/c/Users/danie/Desktop/SWitCH/2_Semestre/DevOps/tut-react-and-spring-data-rest/basic" "/c/Users/danie/Desktop/SWitCH/2_Semestre/DevOps/devops-24-25-1241902/CA1/part1"
  ```
-
 
 - **Creating the .gitignore file**
 
@@ -70,7 +82,7 @@ Throughout this project I will be using **Issues** feature in GitHub as a way to
 issues can also be linked to my commits if I refer to them in my commit message.
 As seen by the following example, I created an issue regarding one of the main tasks for this project named *"Add 'Job
 Years' - validation and testing #1"* and the message contained a direct reference to the number of that issue, thus linking them.
-~~~shell
+~~~bash
 git commit -m "Added validations and tests to Employee (related to issue #1)"
 ~~~
 
@@ -79,7 +91,7 @@ the repository's history. These tags can, and will, be pushed to the remote repo
 the structure of this project. Using the following commands allow us to send add a tag to our project and then push it to the
 remote repository:
 
-~~~shell
+~~~bash
 git tag v1.0.0
 git push origin v1.0.0
 ~~~
@@ -92,17 +104,13 @@ The second (and most meaningful commit) sent to the repository happened once all
 all set. This commit (*'Added Basic folder and did small tweaks'*) followed the structure where I staged,
 committed, and pushed my changes to the remote repository:
 
-~~~shell
+~~~bash
 git add .
 git commit -m "Added Basic folder and did small tweaks"
 git push
 ~~~
 
-## Part 1
-As referenced earlier, this assignment  will follow a structured approach to version control and feature development. The first part of the project will be developed entirely within the master branch,
-In the second part, branching strategies will be introduced to manage development more effectively. Additionally, I will also explore and present an alternative technological solution for version control that does not rely on Git.
-
-### Part 1.1
+### Part 1-1
 
 ### Goals & Requirements
  - Use of *tags* to keep track of the versions of the application;
@@ -291,7 +299,7 @@ number of years each employee has worked, enabling the application to showcase t
 ~~~
 
 - **app.js:**
-- 
+
 The React components were updated to include the new jobYears field, allowing users to view the number of years an employee has worked. The EmployeeList 
 and Employee components now display this information in a dedicated 'Job Years' column within the employee table, ensuring that the feature is visible right from the start.
 
@@ -344,9 +352,9 @@ ensure the data was being handled correctly on the server side and that jobYears
 
 **Finishing up**
 
-Once everything was running smoothly, I needed to commit these changes to the remote repository. As previously mentioned, I add created an *Issue* with the title 'Add 'Job Years'- 
-validation and testing #1' and so, I needed to reference it to link them together. For this, the steps followed were:
-~~~shell
+Once everything was running smoothly, I needed to commit these changes to the remote repository. As previously mentioned, I add created an *Issue* with the title "Add 'Job Years'- 
+validation and testing #1" and so, I needed to reference it to link them together. For this, the steps followed were:
+~~~bash
 git add .
 git commit -m "Added validations and tests to Employee (related to issue #1)"
 git push
@@ -354,7 +362,7 @@ git push
 I also needed to add a new tag to indicate that this part was completed. As I learned that tags can be annotated, I started adding´notes related to the commit I was 
 linking the tag with. For this I ran the following commands:
 
-~~~shell
+~~~bash
 git tag v1.2.0 -m "Employee validations and tests"
 git push origin v1.2.0
 ~~~
@@ -362,7 +370,7 @@ I also learned that using ``git show <NameOfTag>`` allows me to see all the deta
 
 To finalise, it was intended for me to send this README file as proper documentation for this part. So, I added a new commit and marked it with the tag *ca1-part1.1*.
 
-~~~shell
+~~~bash
 git add .
 git commit -m "Updated README file (related to issue #2)."
 git tag ca1-part1.1 -m "Updated the ReadMe file for part 1.1"
@@ -370,7 +378,7 @@ git push
 git push origin ca1-part1.1
 ~~~
 
-### part 1.2
+### Part 1-2
 
 ### Goals & Requirements
 
@@ -402,7 +410,7 @@ A new branch was created to isolate and manage all developments associated with 
 add the email feature to the employee without working on the main branch. Here I'll showcase the commands I used, the first relates to the creation of a new branch. With this command, I
 automatically move to this branch. However, I can always use the second command to check if I am on the right location.
 
-~~~shell
+~~~bash
 git checkout -b email-field
 git branch
 ~~~
@@ -461,7 +469,7 @@ Going back to the merging, I then pushed the email-field branch upstream with ``
 After switching to the main branch, I merged the email-field branch with the *--no-ff* option to maintain a clear commit history. 
 The updated main branch was then pushed using git push. Finally, I tagged the new version as v1.3.0 and pushed the tag to the remote repository.
 
-~~~shell
+~~~bash
 #commit the changes
 git add .
 git commit -m "Added new email field and tests. Closes #3 #4 #7"
@@ -471,7 +479,7 @@ git push --set-upstream origin email-field
 
 #switch to main and merge the changes
 git checkout main
-git merge  - -no-ff email-field
+git merge  --no-ff email-field
 
 #push to update the main branch
 git push
@@ -576,7 +584,8 @@ and milestones marked with tags. The visuals provided show how version control w
 Using issues also helped keep everything organised and easy to follow, making sure all the changes are well-documented.
 
 
-### Alternative to Git
+### Part 1-3
+#### Alternative to Git
 
 As an alternative technological solution for version control, I looked into Mercurial.
 
@@ -588,14 +597,14 @@ could have been used to solve the requirements of this assignment.
 
 **Comparing Mercurial and Git** 
 
-| Feature                     | Mercurial                                                                                                                                                                       | Git                                                                                                                        |
-|-----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| History and Revision        | Mercurial tracks history with SHA-1 hashes in a linear manner and enforces stricter history integrity.                                                                          | Git uses hash IDs for efficient history tracking and allows history modification with commands like rebase                 |
-| Branching and Merging       | Mercurial supports branching with named and anonymous branches, offering easy merging but fewer flexible tools. Named branches in Mercurial are permanent and can't be deleted. | Git offers lightweight branching with easy creation, merging, and deletion, allowing branches to be recreated without issues. |
-| Architecture                | Mercurial is distributed, with each user having a local copy of the entire repository.                                                                                          | Git is also a distributed version control system, where each user has a full copy of the repository and its history.       |
-| Collaboration Features      | Mercurial lacks built-in pull request support, but tools like Bitbucket and Source                                                                                              | Git uses pull requests for collaboration and has a stronger ecosystem of collaboration tools, widely used in open-source and enterprise projects                                                                                                                  |
-| Performance and Scalability | Mercurial is fast but may not perform as efficiently with very large repositories.                                                                                              | Git is fast with large repositories and scales well for teams, especially with high-volume changes.|
-| Ease of Use                 | Mercurial is easier for beginners due to its simpler command set, though it is less powerful.| Git has a steeper learning curve due to its powerful commands but offers great flexibility once mastered                                                                                                                  |
+| Feature                     | Mercurial                                                                                                                                                                       | Git                                                                                                                                              |
+|-----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| History and Revision        | Mercurial tracks history with SHA-1 hashes in a linear manner and enforces stricter history integrity.                                                                          | Git uses hash IDs for efficient history tracking and allows history modification with commands like rebase                                       |
+| Branching and Merging       | Mercurial supports branching with named and anonymous branches, offering easy merging but fewer flexible tools. Named branches in Mercurial are permanent and can't be deleted. | Git offers lightweight branching with easy creation, merging, and deletion, allowing branches to be recreated without issues.                    |
+| Architecture                | Mercurial is distributed, with each user having a local copy of the entire repository.                                                                                          | Git is also a distributed version control system, where each user has a full copy of the repository and its history.                             |
+| Collaboration Features      | Mercurial lacks built-in pull request support, but tools like Bitbucket and Source                                                                                              | Git uses pull requests for collaboration and has a stronger ecosystem of collaboration tools, widely used in open-source and enterprise projects |
+| Performance and Scalability | Mercurial is fast but may not perform as efficiently with very large repositories.                                                                                              | Git is fast with large repositories and scales well for teams, especially with high-volume changes.                                              |
+| Ease of Use                 | Mercurial is easier for beginners due to its simpler command set, though it is less powerful.| Git has a steeper learning curve due to its powerful commands but offers great flexibility once mastered                                         |
 
 
 **Using Mercurial in the Assignment**
@@ -609,7 +618,7 @@ the necessary files. Then, I set up a remote repository and pushed the local cha
 Whilst this process is quite similar to Git, Mercurial simplifies things by treating every clone as a full repository,
 making distributed version control straightforward to manage.
 
-~~~shell
+~~~bash
 # Create a new Mercurial repository
 mkdir /path/to/devops-24-25-1241902
 cd /path/to/devops-24-25-1241902
@@ -627,10 +636,10 @@ hg commit -m "Initial commit with 'basic' folder extracted from Tutorial applica
 
 - **Feature Development and Branch Management:**
 
-In Mercurial, creating a new branch is very straightfoward. With my repository created, I can do the following commands to
+In Mercurial, creating a new branch is very straightforward. With my repository created, I can do the following commands to
 create a new branch for the new features.
 
-~~~shell
+~~~bash
 #Creating a new branch: email-field
 hg branch email-field
 ~~~
@@ -640,7 +649,7 @@ hg branch email-field
 Once all the changes were added, I can commit them to the email-field branch. I am also able to use tags to ensure stable releases. Mercurial
 automatically commits the tags added so there is no need for an extra step.
 
-~~~shell
+~~~bash
 #Committing the changes
 hg commit -m "Added email field to the assignment"
 
@@ -659,7 +668,7 @@ hg push --tags
 Once the feature development is complete and thoroughly tested, they can be merged back into the default (Mercurial's version of the main branch).
 To do this, I need to move back to the default branch and merge the new feature branch into it. 
 
-~~~shell
+~~~bash
 #Moving to the default branch
 hg update default
 
@@ -678,7 +687,7 @@ releases, and pushing updates to a remote repository. Its simple, beginner-frien
 making Mercurial a great option for managing version control.
 
 --- 
-### **Conclusion**
+### **Concluding**
 
 Using the Version Control with Git assignment in **Part1.1** helped me gain a solid understanding of version control systems. 
 I worked with the master branch, commited changes, and tagged releases, which laid the groundwork for managing project changes effectively.
@@ -776,7 +785,7 @@ workflow by reducing the steps needed to start the server, and thus, simplifying
 ![part2runServerTaskRunning.png](images/part2runServerTaskRunning.png)
 
 Once everything was running smoothly, I commited the changed to the repository and closed the issue related to this task.
-~~~shell 
+~~~bash 
 git commit -m "Created Gradle task to run the server. Closes #11"
 ~~~ 
 
@@ -786,7 +795,7 @@ In order to ensure the App class's functionality, I added a unit test. This test
 in a new directory created with the command ``mkdir -p src/test/java/basic_dem ``. This  test verifies that the App
 class generates a non-null greeting message, which, while simple, is an important aspect of its functionality.
 
-~~~groovy
+~~~java
 package basic_demo;
 
 import org.junit.Test;
@@ -799,7 +808,6 @@ public class AppTest {
         assertNotNull("app should have a greeting", classUnderTest.getGreeting());
     }
 }
-
 ~~~
 
 To confirm that the test environment was set up correctly, I included the JUnit dependency in the build.gradle 
@@ -816,8 +824,8 @@ Next, I executed the command ``./gradlew test`` and I was able to see that the t
 
 At the end of this section, I committed the changes with the command:
 
-~~~shell
-git commit -m “Fixed submodule issue, added unit test (Closes #12) and re-added CA1/part2 as a normal directory”
+~~~bash
+git commit -m "Fixed submodule issue, added unit test (Closes #12) and re-added CA1/part2 as a normal directory”
 ~~~
 
 *Disclaimer:* Due to a small issue with the submodule, I needed to do some tweaks to ensure the application ran properly and my
@@ -854,7 +862,7 @@ resilient by making it easy and reliable to back up the code.
 
 Once everything was finished, I sent my changes to the repository with the message:
 
-~~~shell
+~~~bash
 git commit -m "Added new Copy task for backup. Closes #13"
 ~~~
 
@@ -886,7 +894,7 @@ The success of this task is evident not only in the image above but also by the 
 
 This final requisite was commited to the repository with the command:
 
-~~~shell
+~~~bash
 git commit -m "Added Zip type task. Closes #14"
 ~~~
 
@@ -914,6 +922,8 @@ The skills I’ve gained will definitely come in handy for future projects, maki
 ---
 ##  Part 3
 
+### Part 3-1
+
 For this third part of Class Assignment 1, I am focusing on the implementation of Gradle as a build automation tool.
 The goal was to migrate a Spring Boot application from Maven to Gradle and then explore all of its features to understand how
 they fit within the software development lifecycle.
@@ -934,7 +944,7 @@ The generated .zip file was then downloaded and added to my *CA1/Part3* folder a
 application. After downloading and unzipping this folder in my repository, I ran the command ``./gradlew tasks`` to
 confirm the setup and check all the available Gradle tasks.
 
-~~~shell
+~~~bash
 #headed to the Downloads folder
 cd ~/Downloads
 
@@ -1017,16 +1027,17 @@ The *package.json* also suffered some changes. I added the following script to h
 Webpack and other frontend-related tasks.
 
 ~~~json
-  "scripts":{
-"webpack":"webpack",
-"build":"npm run webpack",
-"check":"echo Checking frontend",
-"clean":"echo Cleaning frontend",
-"lint":"echo Linting frontend",
-"test":"echo Testing frontend"
-},
+{
+  "scripts": {
+    "webpack": "webpack",
+    "build": "npm run webpack",
+    "check": "echo Checking frontend",
+    "clean": "echo Cleaning frontend",
+    "lint": "echo Linting frontend",
+    "test": "echo Testing frontend"
+  }
+}
 ~~~
-
 
 As soon as these adjustments were added, I ran the command ``./gradlew build`` to confirm that the 
 project was built successfully. This also ensured that the tasks related to the frontend were also
@@ -1053,6 +1064,7 @@ distribution, reducing the risk of errors and making sure deployments always con
 
 It is also important to know that this task depends on the bootJar task meaning that this copy operation
 runs once bootJar has finished successfully.  This ensures a well-structured and dependable build process.
+
 ~~~groovy
 tasks.register('copyJar', Copy) {
  dependsOn bootJar
@@ -1111,8 +1123,8 @@ These improvements have streamlined the build and deployment process, enhancing 
 workflows seamlessly.
 
 --- 
-
-##  Alternative to Gradle
+### Part 3-2
+####  Alternative to Gradle
 
 Whilst Gradle is a flexible and fast build tool, I decided to compare it to Maven. 
 Maven takes a more structured, convention-over-configuration approach, making it easier to use for 
@@ -1125,22 +1137,22 @@ Maven can achieve the same goals as Gradle for an assignment like this.
 
 **Comparing Maven and Gradle**
 
-| Feature                           | Maven                                                                                      | Gradle                                                                |
-|-----------------------------------|--------------------------------------------------------------------------------------------|-----------------------------------------------------------------------|
-| Build Lifecycle                   | Maven uses predefined phases and goals                                                     | Gradle is more customisable and flexible                              |
-| Build Script                      | Maven uses Groovy or Kotlin DSL for configuration scripts (build.gradle, build.gradle.kts) | Gradle uses XML-based configuration (pom.xml)	                        |
-| Configuration Model               | Maven uses a declarative model                                                             | Gradle uses a declarative and imperative model                        |
-| Default Build Tool                | Maven is for Java projects (Spring, enterprise applications)                               | Gradle is for Android projects (Kotlin/Java)                          |
-| Dependency Management             | Maven uses Maven repositories                                                              | Gradle uses Ivy and Maven repositories                                |
-| Extensibility                     | Maven is extensible via XML plugins but less flexible                                      | Gradle is highly extensible via Groovy/Kotlin scripting               |
-| Flexibility	                      | Maven is more rigid, follows convention over configuration                                 | Gradle is more flexible (supports custom logic)                       |
-| Integration with IDEs             | Maven is well-supported in IntelliJ, Eclipse, and VS Code                                  | Gradle is well-supported in IntelliJ, Eclipse, and VS Code            |
-| Learning Curve                    | Maven is easier because XML is more structured and standardised                            | Gradle is steeper because Groovy/Kotlin syntax can be complex         |
-| Parallel Execution                | Maven has limited parallel execution                                                       | Gradle supports parallel and incremental builds                       |
-| Performance	                      | Maven is slower (rebuilds everything)	                                                     | Gradle is faster, supports incremental builds and up-to-date checks.  |
-| Plugin System                     | Maven has a rich ecosystem                                                                 | Gradle is more powerful                                               |
-| Popularity                        | Maven is widely used, especially in enterprise environments                                | Gradle is increasing, especially in modern projects                   |
-| Support for Multi-Project Builds  | Maven supports multi-module projects but requires more configuratin.                     | Gradle has better support with built-in features                      |
+| Feature                           | Maven                                                                                      | Gradle                                                               |
+|-----------------------------------|--------------------------------------------------------------------------------------------|----------------------------------------------------------------------|
+| Build Lifecycle                   | Maven uses predefined phases and goals                                                     | Gradle is more customisable and flexible                             |
+| Build Script                      | Maven uses Groovy or Kotlin DSL for configuration scripts (build.gradle, build.gradle.kts) | Gradle uses XML-based configuration (pom.xml)	                      |
+| Configuration Model               | Maven uses a declarative model                                                             | Gradle uses a declarative and imperative model                       |
+| Default Build Tool                | Maven is for Java projects (Spring, enterprise applications)                               | Gradle is for Android projects (Kotlin/Java)                         |
+| Dependency Management             | Maven uses Maven repositories                                                              | Gradle uses Ivy and Maven repositories                               |
+| Extensibility                     | Maven is extensible via XML plugins but less flexible                                      | Gradle is highly extensible via Groovy/Kotlin scripting              |
+| Flexibility	                      | Maven is more rigid, follows convention over configuration                                | Gradle is more flexible (supports custom logic)                      |
+| Integration with IDEs             | Maven is well-supported in IntelliJ, Eclipse, and VS Code                                  | Gradle is well-supported in IntelliJ, Eclipse, and VS Code           |
+| Learning Curve                    | Maven is easier because XML is more structured and standardised                            | Gradle is steeper because Groovy/Kotlin syntax can be complex        |
+| Parallel Execution                | Maven has limited parallel execution                                                       | Gradle supports parallel and incremental builds                      |
+| Performance	                      | Maven is slower (rebuilds everything)	                                                  | Gradle is faster, supports incremental builds and up-to-date checks. |
+| Plugin System                     | Maven has a rich ecosystem                                                                 | Gradle is more powerful                                              |
+| Popularity                        | Maven is widely used, especially in enterprise environments                                | Gradle is increasing, especially in modern projects                  |
+| Support for Multi-Project Builds  | Maven supports multi-module projects but requires more configuration                       | Gradle has better support with built-in features                     |
 
 
 **Implementing the Assignment with Maven**
@@ -1283,6 +1295,7 @@ to a distribution folder, I achieved similar results while following Maven’s b
 used the maven-clean-plugin to remove Webpack-generated files, ensuring a clean slate for each build. This exercise 
 highlighted the strengths of both tools and showed how Maven can efficiently manage Java-based projects with custom
 build tasks.
+---
 
 **Concluding**
 
@@ -1294,6 +1307,14 @@ scriptable environments.
 This experience has not only strengthened my understanding of build automation tools but also highlighted the importance
 of picking the right tool for the job based on project requirements and team skills. With this insight, I will 
 now make better decisions in the future to ensure the best possible management of software development projects.
+
+---
+
+### Conclusion
+This DevOps project helped me get a better grasp of version control and build tools. I got hands-on with Git, tried 
+out Mercurial as an alternative, and learned how to use Gradle for automating tasks. I also converted a basic tutorial 
+app to Gradle and compared it with Maven, which gave me a solid understanding of how these tools make development more 
+efficient and easier to manage.
 
 
 
