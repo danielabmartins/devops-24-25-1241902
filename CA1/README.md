@@ -19,8 +19,8 @@
 
 ### Introduction
 
-This DevOps assignment is divided into two parts. The first part explores the Version Control with Git and includes an 
-alternative to Git. The second part explores Build Tools with Gradle. For the third part, we are meant to convert
+This DevOps assignment is divided into three main parts. The first part explores the Version Control with Git and includes an 
+alternative to Git. The second part focuses on Build Tools with Gradle. The third part, covers a conversion of
 the basic tutorial of the application (from part 1) to Gradle.
 
 **Part 1** was also divided into three parts. The first, is intended to work without branches, the second relies on the use
@@ -29,13 +29,13 @@ of branches and the third, and final, explores an alternative solution to Git.
 **Part 2** follows the topic of using build tools with Gradle, focusing on its practical applications.
 
 **Part 3** aims to convert the basic version of the Tutorial application to Gradle. Its second part demonstrates an alternative
-to Gradle, in this case Maven.
+to Gradle, in this case Ant.
 
 ---
 ##  Part 1
 
 ### The Setup
-Due to the nature of this project some configurations and changes needed to be made so that the application runs smoothly.
+Due to the nature of this project some configurations and changes had to be made so that the application could run smoothly.
 I will be explaining these changes in the following steps.
 
 - **Cloning the tutorial**
@@ -72,13 +72,13 @@ repository.
 
 - **Executing the application**
 
-With everything set, I am now able to run the application through my repository whenever I need it. To do this, I need 
+With everything set, I was now able to run the application through my repository whenever I needed it. To do this, I had 
 to move to the *basic* folder and run the command ``/mvnw spring-boot:run`` 
-After this, I need to enter [this url](http://localhost:8080/) to check the application.
+After this, I entered [this url](http://localhost:8080/) to check the application.
 
 - **Structuring and organising the project**
 
-Throughout this project I will be using **Issues** feature in GitHub as a way to keep track of my tasks and ideas. These
+Throughout this project I will be using the **Issues** feature in GitHub as a way to keep track of my tasks and ideas. These
 issues can also be linked to my commits if I refer to them in my commit message.
 As seen by the following example, I created an issue regarding one of the main tasks for this project named *"Add 'Job
 Years' - validation and testing #1"* and the message contained a direct reference to the number of that issue, thus linking them.
@@ -88,7 +88,7 @@ git commit -m "Added validations and tests to Employee (related to issue #1)"
 
 **Tags** will also play a very important part in the making of this project. They are used to mark specific points in
 the repository's history. These tags can, and will, be pushed to the remote repository to ensure everyone can understand
-the structure of this project. Using the following commands allow us to send add a tag to our project and then push it to the
+the structure of this project. The following commands allow us to send add a tag to our project and then push it to the
 remote repository:
 
 ~~~bash
@@ -116,7 +116,7 @@ git push
  - Use of *tags* to keep track of the versions of the application;
  - Develop a new feature to add a new field to the application (*Job Years*);
  - Add unit tests for testing the creation of Employees and the validation of their attributes;
- - Practice debugging both the server and the client.
+ - Practice debugging both the server and the client;
  - Use meaningful commits and tags.
 
 ### Development 
@@ -130,8 +130,8 @@ I will go through each class, detailing the changes and additions made, includin
 
 - **Employee.java:** 
 
-- As requested, I added the jobYears field along with its getter and setter methods. To ensure data integrity, I also included validations in the setter methods. This was done to prevent invalid values, 
-from being assigned and thus avoids potential errors. Both methods for jobYears can be found below and the setter method illustrates the updates
+As requested, I added the jobYears field along with its getter and setter methods. To ensure data integrity, I also included validations in the setter methods. This was done to prevent invalid values
+from being assigned and thus avoid potential errors. Both methods for jobYears can be found below and the setter method illustrates the updates
 made to the other setter methods:
 
 ~~~java
@@ -209,7 +209,7 @@ an Employee.
 - **EmployeeTest.java**: 
 
 This class was added to the newly created test directory, as there were no existing tests for the Employee class. 
-The tests focus on verifying the functionality of the Employee constructor and ensuring that attribute validation works correctly
+The tests focus on verifying the functionality of the Employee constructor and ensuring that attribute validation works correctly.
 
 ~~~java
 @Test
@@ -227,7 +227,6 @@ The tests focus on verifying the functionality of the Employee constructor and e
         assertEquals("Adventurer",employee.getJobTitle());
         assertEquals(3,employee.getJobYears());
     }
-    
 
     public static Stream<Arguments> provideInvalidArguments() {
         return Stream.of(
@@ -352,14 +351,15 @@ ensure the data was being handled correctly on the server side and that jobYears
 
 **Finishing up**
 
-Once everything was running smoothly, I needed to commit these changes to the remote repository. As previously mentioned, I add created an *Issue* with the title "Add 'Job Years'- 
+Once everything was running smoothly, I needed to commit these changes to the remote repository. As previously mentioned, I created an Issue with the title "Add 'Job Years'- 
 validation and testing #1" and so, I needed to reference it to link them together. For this, the steps followed were:
 ~~~bash
 git add .
 git commit -m "Added validations and tests to Employee (related to issue #1)"
 git push
 ~~~
-I also needed to add a new tag to indicate that this part was completed. As I learned that tags can be annotated, I started adding´notes related to the commit I was 
+
+I also needed to add a new tag to indicate that this part was completed. As I learned that tags can be annotated, I started adding notes related to the commit I was 
 linking the tag with. For this I ran the following commands:
 
 ~~~bash
@@ -383,10 +383,10 @@ git push origin ca1-part1.1
 ### Goals & Requirements
 
 - Implement a Git workflow using feature and bug-fix branches to ensure isolated development;
-- Develop and test a new feature (*email field) in a dedicated branch;
--Create a second branch (fix-invalid-email) to address and validate proper email formats.
-- Practice debugging both the server and the client.
-- Merge completed and tested branches into the master branch.
+- Develop and test a new feature (*email field*) in a dedicated branch;
+- Create a second branch (*fix-invalid-email*) to address and validate proper email formats;
+- Practice debugging both the server and the client;
+- Merge completed and tested branches into the master branch;
 - Use meaningful commits and tags.
 
 ### Development 
@@ -402,13 +402,13 @@ use of branches.
 - #### Using the master branch 
 
 To start out this section, I used the command ``git branch`` to confirm that I was on the right branch, in this case
-*main*. At this point, this command proved to be necessary, but it became very useful throughout the project as 
-new branches were added. This helped me confirm that I was working on the correct branch.
+*main*.This command became very useful throughout the project as new branches were added. For now, it helped me confirm that I was working on the correct branch.
 
 - #### Developing new features 
 A new branch was created to isolate and manage all developments associated with the new email feature. To do this, I used a new command to create the *email-field* branch and in it, I was able to
-add the email feature to the employee without working on the main branch. Here I'll showcase the commands I used, the first relates to the creation of a new branch. With this command, I
-automatically move to this branch. However, I can always use the second command to check if I am on the right location.
+add the email feature to the employee without working on the main branch. 
+
+Below, I'll demonstrate the commands I used. The first command creates the new branch and automatically switches to it. If needed, I can always use the second command to verify that I'm on the correct branch.
 
 ~~~bash
 git checkout -b email-field
@@ -453,15 +453,16 @@ for the email setter method. The first test checks for a valid email whilst the 
     }
 ~~~~
 
-
 Finally, I debugged both the server and client components of the application as to detect and resolve any issues introduced
 by the creation of the email field.
 
 - #### Merging with the main
 
 To merge changes from the email-field branch, I first committed the updates. In the message I mention the previously
-created issues with 'Closes #3 #4 #7'. I have learned that using a keyword like *closes* or *fixes* along with the number
-of the issue inside the commit message, automatically closes it. However, in this case, only issue #3 closed. As I looked
+created issues with ``Closes #3 #4 #7'``.
+I have learned that using a keyword like *closes* or *fixes* along with the number
+of the issue inside the commit message, automatically closes it. 
+However, in this case, only issue #3 closed. As I looked
 into this, I understood that I need to write *closes* before each issue if I want all of them to close. In the future, I
 will apply this command properly.
 
@@ -503,7 +504,6 @@ private boolean isEmailInvalid(String email) {
 		return email == null || email.isBlank() || !email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
 	}
 ~~~
-
 Though I could have used something like *email.contains("@")* to do this verification, I decided to go a little further and 
 create a regex to ensure that the email abides normal email rules. This is a more detailed and strict approach that can
 catch more errors. The alternative would allow emails to contain a '@' without a local or a domain part. It could also allow 
@@ -534,7 +534,6 @@ branch using the steps aforementioned and added the tag **v1.3.1** (which indica
 This version update shows the ongoing improvements in the application's functionality and reliability.
 
 Once everything was finished, this part of the assignment was sent to the repository with the tag **ca1-part1.2**. 
-
 
 
 ### **The Results**
@@ -595,16 +594,16 @@ As an alternative technological solution for version control, I looked into Merc
 In this section, I am going to analyse how Mercurial compares to Git regarding their version control features and how Mercurial
 could have been used to solve the requirements of this assignment.
 
-**Comparing Mercurial and Git** 
+**Comparing Mercurial and Git**
 
 | Feature                     | Mercurial                                                                                                                                                                       | Git                                                                                                                                              |
 |-----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| History and Revision        | Mercurial tracks history with SHA-1 hashes in a linear manner and enforces stricter history integrity.                                                                          | Git uses hash IDs for efficient history tracking and allows history modification with commands like rebase                                       |
-| Branching and Merging       | Mercurial supports branching with named and anonymous branches, offering easy merging but fewer flexible tools. Named branches in Mercurial are permanent and can't be deleted. | Git offers lightweight branching with easy creation, merging, and deletion, allowing branches to be recreated without issues.                    |
 | Architecture                | Mercurial is distributed, with each user having a local copy of the entire repository.                                                                                          | Git is also a distributed version control system, where each user has a full copy of the repository and its history.                             |
+| Branching and Merging       | Mercurial supports branching with named and anonymous branches, offering easy merging but fewer flexible tools. Named branches in Mercurial are permanent and can't be deleted. | Git offers lightweight branching with easy creation, merging, and deletion, allowing branches to be recreated without issues.                    |
 | Collaboration Features      | Mercurial lacks built-in pull request support, but tools like Bitbucket and Source                                                                                              | Git uses pull requests for collaboration and has a stronger ecosystem of collaboration tools, widely used in open-source and enterprise projects |
+| Ease of Use                 | Mercurial is easier for beginners due to its simpler command set, though it is less powerful.                                                                                   | Git has a steeper learning curve due to its powerful commands but offers great flexibility once mastered                                         |
+| History and Revision        | Mercurial tracks history with SHA-1 hashes in a linear manner and enforces stricter history integrity.                                                                          | Git uses hash IDs for efficient history tracking and allows history modification with commands like rebase                                       |
 | Performance and Scalability | Mercurial is fast but may not perform as efficiently with very large repositories.                                                                                              | Git is fast with large repositories and scales well for teams, especially with high-volume changes.                                              |
-| Ease of Use                 | Mercurial is easier for beginners due to its simpler command set, though it is less powerful.| Git has a steeper learning curve due to its powerful commands but offers great flexibility once mastered                                         |
 
 
 **Using Mercurial in the Assignment**
@@ -715,7 +714,7 @@ This section highlights the steps involved in building, launching, and connectin
 
 I started by setting up a new directory for the assignment, called /CA2/part2, and cloned the example application from the provided Bitbucket repository.
 This repository contained a build.gradle file and included the Gradle Wrapper to maintain a consistent environment. Once everything was installed,
-I checked if Gradle was correctly set up by running ``gradle -v`` in the terminal. This command also allows me to see which version of Gradle I am using at the 
+I checked if Gradle was correctly set up by running ``gradle -v`` in the terminal. This command also lets me see which version of Gradle I am using at the 
 moment.
 
 ### Gradle Basic Demo
@@ -784,7 +783,7 @@ workflow by reducing the steps needed to start the server, and thus, simplifying
 
 ![part2runServerTaskRunning.png](images/part2runServerTaskRunning.png)
 
-Once everything was running smoothly, I commited the changed to the repository and closed the issue related to this task.
+Once everything was running smoothly, I commited the changes to the repository and closed the issue related to this task.
 ~~~bash 
 git commit -m "Created Gradle task to run the server. Closes #11"
 ~~~ 
@@ -854,8 +853,8 @@ copied to the backup location, demonstrating that the task effectively protects 
 
 ![part2gradlewbackup.png](images/part2gradlewbackup.png)
 
-This also resulted in the creation of a new folder named backup in my directory (**backup**), confirming that the
-backup process was completed properly. Adding the backup task to the Gradle build script has made the project more 
+This also resulted in the creation of a new folder named backup in my directory, confirming that the
+backup process was completed properly. Adding this task to the Gradle build script has made the project more 
 resilient by making it easy and reliable to back up the code.
 
 ![part2backupfolder.png](images/part2backupfolder.png)
@@ -907,7 +906,6 @@ as a build tool.
 The project showed how Gradle can help automate essential tasks like building projects, running tests, 
 and managing files. These features are key to keeping the development process smooth and efficient, making Gradle
 a must-have for any project.
-
 With the tasks  *runServer*, *backup*, and *archive*, I saw how easy it is to extend Gradle's functionality. These 
 tasks not only made development easier but also helped improve the project's resilience and made it easier to distribute.
 
@@ -970,28 +968,28 @@ As this was a new build management system, this process required a lot of attent
 components operated correctly. Due to the nature of this project, some compilation errors occurred throughout the
 making of this assignment and so, these adjustments are also mentioned bellow. 
 
--**Replacing the Source Directory:**
+- **Replacing the Source Directory:**
 
 The first step was to delete the original *src* folder as to allow for the
 integration of the new codebase. Then, I copied the *src* folder (and all its subfolders) from the basic folder of the
 tutorial to this project.
 
---**Including Additional Configuration Files:** 
+- **Including Additional Configuration Files:** 
 
 For the configuration to succeed, I also needed to copy the files *webpack.config.js* and *package.json* to the root
 of the new directory. This was done as to preserve the frontend build configuration and dependencies.
 
--**Removing Redundant Directories:** 
+- **Removing Redundant Directories:** 
 
 Then, I needed to remove the *src/main/resources/static/built* directory. Since this file is automatically generated by 
 Webpack during the build process, it should not be included to prevent conflicts and redundancy
 
--**Adjusting Import Statements:**
+- **Adjusting Import Statements:**
 
 In the *Employee.class*, I needed to adjust the import statements so that they could fit the transition from Java EE 
 to Jakarta EE. Therefore, I updated *javax.persistence* to *jakarta.persistence*.
 
--**Configuring Package Manager:**
+- **Configuring Package Manager:**
 
 The *package.json* file needed to be updated to specify a fixed version of the package manager by adding
 ```"packageManager": "npm@9.6.7"```. With this addition, the project can use the same version of the 
@@ -1011,7 +1009,7 @@ As I was working with Java 17, I needed to add a new plugin block to my *build.g
 
 ``id "org.siouan.frontend-jdk17" version "8.0.0"``
 
-Also in the *build.gradle* file, I also added script commands to ensure proper handling of frontend assets.
+Also in the *build.gradle* file, I added script commands to ensure proper handling of frontend assets.
 These configurations were tailored to the specific *Node.js* version, enabling the inclusion of scripts for
 assembling, cleaning, and verifying the frontend.
 
@@ -1056,7 +1054,7 @@ ensure everything ran smoothly.
 
 ### Adding a Copy Type Task
 
-To improve file management, particularly around distribution, a custom Gradle task(**copyJar**) was defined.
+To improve file management, particularly around distribution, a custom Gradle task (**copyJar**) was defined.
 
 This task copies the .jar file generated by the bootJar task from the output directory to a dist folder
 at the project root. This ensures that only the correct, fully assembled .jar file is included for
@@ -1126,180 +1124,110 @@ workflows seamlessly.
 ### Part 3-2
 ####  Alternative to Gradle
 
-Whilst Gradle is a flexible and fast build tool, I decided to compare it to Maven. 
-Maven takes a more structured, convention-over-configuration approach, making it easier to use for 
-standard projects. While Gradle is known for speed and flexibility, Maven is widely adopted, has 
-great documentation, and simplifies dependency management. 
+Whilst Gradle is a flexible and fast build tool, I decided to compare it to Ant. Apache Ant is one of the earliest build tools for Java and it is known for its XML-based scripting and
+task-based execution model. While Gradle is known for speed, flexibility and for following a declarative approach, Ant requires explicit scripting for tasks, making it more manual and highly customisable.
 
-In this section, I am going to compare Maven to Gradle in terms of build automation features, including
-how each tool handles extensions like plugins and custom tasks. Additionally, I'm going to explore how 
-Maven can achieve the same goals as Gradle for an assignment like this. 
+In this section, I am going to compare Ant to Gradle in terms of build automation features, including how each tool handles extensions like plugins and custom tasks. Additionally, I'll 
+explore how Ant can achieve the same goals as Gradle for an assignment like this if I were to use this tool.
+
 
 **Comparing Maven and Gradle**
 
-| Feature                           | Maven                                                                                      | Gradle                                                               |
-|-----------------------------------|--------------------------------------------------------------------------------------------|----------------------------------------------------------------------|
-| Build Lifecycle                   | Maven uses predefined phases and goals                                                     | Gradle is more customisable and flexible                             |
-| Build Script                      | Maven uses Groovy or Kotlin DSL for configuration scripts (build.gradle, build.gradle.kts) | Gradle uses XML-based configuration (pom.xml)	                      |
-| Configuration Model               | Maven uses a declarative model                                                             | Gradle uses a declarative and imperative model                       |
-| Default Build Tool                | Maven is for Java projects (Spring, enterprise applications)                               | Gradle is for Android projects (Kotlin/Java)                         |
-| Dependency Management             | Maven uses Maven repositories                                                              | Gradle uses Ivy and Maven repositories                               |
-| Extensibility                     | Maven is extensible via XML plugins but less flexible                                      | Gradle is highly extensible via Groovy/Kotlin scripting              |
-| Flexibility	                      | Maven is more rigid, follows convention over configuration                                | Gradle is more flexible (supports custom logic)                      |
-| Integration with IDEs             | Maven is well-supported in IntelliJ, Eclipse, and VS Code                                  | Gradle is well-supported in IntelliJ, Eclipse, and VS Code           |
-| Learning Curve                    | Maven is easier because XML is more structured and standardised                            | Gradle is steeper because Groovy/Kotlin syntax can be complex        |
-| Parallel Execution                | Maven has limited parallel execution                                                       | Gradle supports parallel and incremental builds                      |
-| Performance	                      | Maven is slower (rebuilds everything)	                                                  | Gradle is faster, supports incremental builds and up-to-date checks. |
-| Plugin System                     | Maven has a rich ecosystem                                                                 | Gradle is more powerful                                              |
-| Popularity                        | Maven is widely used, especially in enterprise environments                                | Gradle is increasing, especially in modern projects                  |
-| Support for Multi-Project Builds  | Maven supports multi-module projects but requires more configuration                       | Gradle has better support with built-in features                     |
+| Feature                           | Ant                                                                                        | Gradle                                                                     |
+|-----------------------------------|:-------------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
+| Build Lifecycle                   | Ant does not have a predefined lifecycle, relies on manual task definitions	              | Gradle uses a structured lifecycle with tasks and dependencies             |
+| Build Script                      | Ant uses XML build scripts (build.xml)	                                                  | Gradle uses Groovy/Kotlin DSL (build.gradle, build.gradle.kts)	           |
+| Configuration Model               | Ant is fully imperative (explicit scripting required)                                      | Gradle uses a declarative and imperative model                             |
+| Default Build Tool                | Ant is designed for Java projects but requires manual dependency management.               | Gradle is commonly used for Java, Kotlin, and Android projects             |
+| Dependency Management             | Ant does not have built-in dependency management (requires Apache Ivy or manual handling)  | Gradle has built-in dependency management using Ivy and Maven repositories | 
+| Extensibility                     | Ant is extensible via custom scripts and external libraries                                | Gradle supports plugins and scripting for extensions                       |
+| Integration with IDEs             | Ant is supported in IntelliJ, Eclipse, and NetBeans                                        | Gradle is well-supported in IntelliJ, Eclipse, and VS Code                 |
+| Learning Curve                    | Ant has a steep learning curve due to manual scripting	                                  | Gradle has a steep learning curve because of Groovy/Kotlin                 |
+| Parallel Execution                | Ant does not have built-in parallel execution                                              | Gradle supports parallel and incremental builds                            |
+| Performance	                     | Ant is slower due to lack of incremental build support                                     | Gradle is faster with incremental builds and caching                       |
+| Plugin System                     | Ant requires external plugins or manual scripting                                          | Gradle has a powerful plugin ecosystem                                     |
+| Popularity                        | Ant is still used in legacy projects but is less common today                              | Gradle is widely used in modern projects                                   |
+| Support for Multi-Project Builds  | Ant requires manual configuration for multi-project builds                                 | Gradle has built-in multi-project support                                  |
 
 
 **Implementing the Assignment with Maven**
 
-If we want to match the setup and functionality of Gradle, we’ll need to configure Maven for our Spring Boot app. 
-This setup will handle everything Gradle does, like integrating frontend assets, managing files, and adding custom build 
-tasks. For this, I have detailed bellow a step-by-step guide to getting Maven up and running, including all the key pom.xml configurations.
+To match the setup and functionality of Gradle, I needed to configure Apache Ant for the Spring Boot application. Unlike Gradle, Ant does not have built-in dependency
+management, so I integrated Apache Ivy to handle dependencies efficiently.
 
--**Project Setup:**
+Since Ant follows an imperative task-based approach, I manually defined build tasks in build.xml for compiling the java code, managing dependencies, handling frontend assets and all the necessary
+tasks for this project.
 
-Using Maven, I needed to add the dependencies to the pom.xml file of the Spring Boot application. I added dependencies for
-REST, Thymeleaf, JPA and H2 just like with Gradle.
+Below, I provide a step-by-step guide to setting up Ant, including the build.xml and ivy.xml configurations necessary to achieve a similar outcome as Gradle.
+
+- **Project Setup:**
+
+Using Ant, I needed to manually configure the **build.xml** file to handle key aspects of the Spring Boot application. I had to integrate Apache Ivy to manage dependencies for 
+REST, Thymeleaf, JPA, and H2, just like with Gradle. The **ivy.xml** file would look like this:
 
 ~~~xml
 <dependencies>
- <dependency>
-  <groupId>org.springframework.boot</groupId>
-  <artifactId>spring-boot-starter-web</artifactId>
- </dependency>
-
- <dependency>
-  <groupId>org.springframework.boot</groupId>
-  <artifactId>spring-boot-starter-thymeleaf</artifactId>
- </dependency>
-
- <dependency>
-  <groupId>org.springframework.boot</groupId>
-  <artifactId>spring-boot-starter-data-jpa</artifactId>
- </dependency>
-
- <dependency>
-  <groupId>com.h2database</groupId>
-  <artifactId>h2</artifactId>
-  <scope>runtime</scope>
- </dependency>
-
- <dependency>
-  <groupId>org.springframework.boot</groupId>
-  <artifactId>spring-boot-starter-test</artifactId>
-  <scope>test</scope>
- </dependency>
+  <dependency org="org.springframework.boot" name="spring-boot-starter-web" rev="latest.release" />
+  <dependency org="org.springframework.boot" name="spring-boot-starter-thymeleaf" rev="latest.release" />
+  <dependency org="org.springframework.boot" name="spring-boot-starter-data-jpa" rev="latest.release" />
+  <dependency org="com.h2database" name="h2" rev="latest.release" />
+  <dependency org="org.springframework.boot" name="spring-boot-starter-test" rev="latest.release" conf="test->default" />
 </dependencies>
 ~~~
 
--**Frontend Integration:**
+- **Frontend Integration:**
 
-The frontend-maven-plugin had to be set up so it could manage Node and npm installation and also handle the frontend build process.
-
-~~~xml
-            <executions>
-                <execution>
-                    <goals>
-                        <goal>install-node-and-npm</goal>
-                    </goals>
-                </execution>
-                <execution>
-                    <goals>
-                        <goal>npm</goal>
-                    </goals>
-                    <phase>generate-resources</phase> 
-                    <configuration>
-                        <arguments>install</arguments> 
-                    </configuration>
-                </execution>
-                <execution>
-                    <goals>
-                        <goal>npm</goal>
-                    </goals>
-                    <phase>compile</phase> 
-                    <configuration>
-                        <arguments>run build</arguments> 
-                    </configuration>
-                </execution>
-            </executions>
-~~~
-
--**Copy JAR Task:**
-
-I set up the maven-dependency-plugin to copy the generated .jar file into a distribution folder after the build process is completed.
+I added a task in build.xml to install Node.js and npm manually and run the frontend build process since Ant does not have built-in frontend plugin support.
 
 ~~~xml
-<build>
-    <plugins>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <version>3.1.0</version> 
-            <executions>
-                <execution>
-                    <phase>install</phase> 
-                    <goals>
-                        <goal>copy</goal> 
-                    </goals>
-                    <configuration>
-                        <artifactItems>
-                            <artifactItem>
-                                <groupId>${project.groupId}</groupId>
-                                <artifactId>${project.artifactId}</artifactId>
-                                <version>${project.version}</version>
-                                <type>jar</type>
-                                <outputDirectory>${project.build.directory}/dist</outputDirectory> 
-                            </artifactItem>
-                        </artifactItems>
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
-    </plugins>
-</build>
+<target name="install-node">
+  <exec executable="npm">
+    <arg value="install" />
+  </exec>
+</target>
+
+<target name="build-frontend" depends="install-node">
+<exec executable="npm">
+  <arg value="run" />
+  <arg value="build" />
+</exec>
+</target>
 ~~~
 
--**Delete Webpack Files Task:**
+- **Copy JAR Task:**
 
-To ensure that Webpack-generated files are removed during the build process, I configured the maven-clean-plugin to clean the output directory containing these files whenever the clean phase is executed.
+To copy the generated .jar file into a distribution folder after the build process, I defined a task in build.xml:
 
 ~~~xml
-            <executions>
-                <execution>
-                    <phase>clean</phase> 
-                    <goals>
-                        <goal>clean</goal> 
-                    </goals>
-                    <configuration>
-                        <filesets>
-                            <fileset>
-                                <directory>${project.build.directory}/webpack-output</directory> 
-                                <includes>
-                                    <include>**/*</include> 
-                                </includes>
-                            </fileset>
-                        </filesets>
-                    </configuration>
-                </execution>
-            </executions>
+<target name="copy-jar">
+  <copy file="dist/myapp.jar" todir="output/" />
+</target>
+
 ~~~
 
-In this part of the project, I successfully mirrored the Gradle setup using Maven for the Spring Boot application. By
-configuring Maven to handle key tasks like managing dependencies, integrating frontend assets, and copying the .jar file
-to a distribution folder, I achieved similar results while following Maven’s build lifecycle. Additionally, I 
-used the maven-clean-plugin to remove Webpack-generated files, ensuring a clean slate for each build. This exercise 
-highlighted the strengths of both tools and showed how Maven can efficiently manage Java-based projects with custom
-build tasks.
+- **Delete Webpack Files Task:**
+
+To remove the webpack-generated files during the build process, I added a clean task:
+
+~~~xml
+<target name="clean">
+  <delete>
+    <fileset dir="dist/webpack-output" includes="**/*" />
+  </delete>
+</target>
+~~~
+
+With these configurations, I successfully mirrored the Gradle setup using Ant for the Spring Boot application. By configuring Ant to manage dependencies through Ivy, handling
+frontend assets manually, and defining tasks for JAR copying and cleanup, I achieved similar results to Gradle.
+
+This process highlighted the differences between Ant and Gradle that I mentioned before. While Ant offers flexibility and control, it requires more manual configuration compared to Gradle.
+
+
 ---
 
 **Concluding**
 
-Throughout this assignment, I’ve explored moving a Spring Boot application from Maven to Gradle, showcasing Gradle’s 
+Throughout this part of the assignment, I have explored moving a Spring Boot application from Maven to Gradle, showcasing Gradle’s 
 strengths in managing dependencies, handling frontend tools, and customising build tasks. By comparing the two,
 I’ve seen how each tool fits different project needs—Maven’s structured approach and Gradle’s flexibility in
 scriptable environments.
@@ -1313,7 +1241,7 @@ now make better decisions in the future to ensure the best possible management o
 ### Conclusion
 This DevOps project helped me get a better grasp of version control and build tools. I got hands-on with Git, tried 
 out Mercurial as an alternative, and learned how to use Gradle for automating tasks. I also converted a basic tutorial 
-app to Gradle and compared it with Maven, which gave me a solid understanding of how these tools make development more 
+app to Gradle and compared it with Ant, which gave me a solid understanding of how these tools make development more 
 efficient and easier to manage.
 
 
