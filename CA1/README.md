@@ -30,8 +30,8 @@ of branches and the third, and final, explores an alternative solution to Git.
 
 **Part 3** aims to convert the basic version of the Tutorial application to Gradle. Its second part demonstrates an alternative
 to Gradle, in this case Ant.
-
 ---
+
 ##  Part 1
 
 ### The Setup
