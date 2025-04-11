@@ -17,6 +17,12 @@
 **Part 1** The goal is to practice with VirtualBox using the same projects from the previous assignments but now
 inside a VirtualBox/UTM VM with Ubuntu
 
+**Part 2**  The goal of Part 2 of this assignment is to use Vagrant to setup a virtual
+environment to execute the tutorial spring boot application, gradle ”basic” version
+(developed in CA1, Part3)
+
+
+
 
 ---
 
@@ -29,7 +35,9 @@ experience setting up and managing virtual machines for software development and
 
 Since I had already set up my virtual machine in a previous course (SCOMRED), I didn’t need to go through 
 the initial configuration steps again. My VM was already configured with a Host-only network, a static IP 
-address, and essential network tools, allowing me to focus directly on the project tasks.
+address, and essential network tools, allowing me to focus directly on the project tasks. Below is an example
+of the aforementioned configuration needed.
+![ca21-vmsetup.png](images/ca21-vmsetup.png)
 
 However, I needed to remotely manage my Virtual Machine. For that, I installed the **OpenSSH** server by using
 the command `sudo apt install openssh-server` and then configured it by enabling password authentication. For this,
@@ -38,7 +46,7 @@ completed, I used the command `sudo service ssh restart` to restart the service.
 
 I then had to set up a FTP server so that I could transfer files to and from the VM. I used the command `sudo apt install vsftpd`
 to install it and then configure it. I moved to the `/etc/vsftpd.conf` file and uncommented the line `write_enable = YES`.
-Once again, I restarted the service with `sudo service vsftpd` so that I could begin working on the project.
+Once again, I restarted the service with `sudo service vsftpd restart` so that I could begin working on the project.
 
 Below is an example of what these configurations looked like.
 ![ca21-vsftpd file.png](images/ca21-vsftpd%20file.png)
@@ -117,7 +125,8 @@ My first requirement was to execute the Spring Boot Tutorial Basic Project that 
 This time, I needed to build and run the project inside my Virtual Machine.
 
 I started by heading to the basic folder inside my repository as this was where the application was.
-I executed the command `./mvnw spring-boot:run`.  
+Before I started  running the commands, I installed the wrapper by using ``mvn -N wrapper:wrapper`` and once 
+this was ready, I executed the command `./mvnw spring-boot:run`.  
 Similarly to my first assignment,I needed to access the application. This time, however, I wanted to ensure
 that it was accessible externally. For this, I used the URL `http://192.168.56.5:8080/` with my VM's
 IP address that I found using the ``ifconfig`` command.  
@@ -132,7 +141,9 @@ and that the framework was serving the content perfectly.
 For this part, I am going to focus on building and running the gradle_basic_demo from CA1.2. Due to the
 nature of this project, I needed to run the application in two environments: the virtual and the host machine.
 
-I first moved to the gradle_basic_demo directory in my Virtual Machine where I executed the command
+I first moved to the gradle_basic_demo directory in my Virtual Machine where I executed the command ``gradle wrapper``
+so that I could install the wrapper. Then, I was able to run the following command:
+
 ``./gradlew build``
 
 Since I was using an Ubuntu Server, I did not have a desktop environment to run GUI apps like this 
