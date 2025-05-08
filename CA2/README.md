@@ -180,7 +180,7 @@ was running smoothly and I had completed the task with success.
 ![ca21-table.png](images/ca21-table.png)
 
 ---
-
+# Part 2
 ##  Part 2.1
 
 This report for Class Assignment 3 – Part 2 focuses on virtualisation through the use of Vagrant.
@@ -345,7 +345,6 @@ http://localhost:8080/basic-0.0.1-SNAPSHOT/
 I also checked the database by opening the H2 web console at:
 
 ~~~
-http://localhost:8082/
 ~~~
 This allowed me to verify that the Spring Boot application was correctly connected to the external H2 
 database running inside the VM.
@@ -432,4 +431,114 @@ complex to set up, but it offers better performance and more features, especiall
 The key takeaway from this section was how flexible Vagrant is, letting me switch providers without changing the core setup. This 
 assignment boosted my confidence in working with virtual environments and DevOps tools, while also teaching me how things run in real
 production setups.
+
+---
+# Part 3
+
+The main aim of this assignment is to get familiar with Docker by creating Docker images and running containers for a chat app. 
+This app was originally built and used in a previous assignment of this project. This time, with the help of Docker, we can make sure the
+chat server works the same no matter where it runs.
+
+There are two parts to this assignment:
+- Building the chat server inside the Dockerfile.
+- Building it on the host machine first, then copying the JAR file into the Docker image.
+
+##  Part 3.1
+
+To get started with this version (and the next one), I first downloaded Docker and set up an account. After that, I used the link shared
+by my teachers to clone the repository into my desired folder(*Version1*) which gave me the Basic Gradle project to work with.
+
+Since this first version needs the chat server to be  built directly inside the Dockerfile. This file outlines the steps required to build
+a Docker image for the chat server.It starts off with a Gradle image that includes JDK 11, which is used to build the project inside the 
+container. After that, it switches to a lighter JRE image to keep the final container small and efficient. The built JAR file gets copied
+over from the build stage, and the server is set up to listen on port 12345 when the container runs.
+
+The Dockerfile below includes comments explaining each step:
+
+~~~dockerfile
+# Use the Gradle image with JDK 11 to build the app
+FROM gradle:7.0-jdk11 AS build
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the project folder into the container
+COPY gradle_basic_demo ./
+
+# Set up the Gradle wrapper
+RUN gradle wrapper
+
+# Make the Gradle wrapper script executable
+RUN chmod +x gradlew
+
+# Build the project using the Gradle wrapper
+RUN ./gradlew build
+
+
+# Use a lighter JDK runtime for running the built app
+FROM eclipse-temurin:11-jre
+
+# Set the working directory again for the runtime image
+WORKDIR /app
+
+# Copy the built JAR file from the build container to the runtime container
+COPY --from=build /app/build/libs/*.jar app.jar
+
+# Expose port 12345 so the app can receive connections
+EXPOSE 12345
+
+# Set the command to run the chat server when the container starts
+ENTRYPOINT ["java", "-cp", "app.jar", "basic_demo.ChatServerApp", "12345"]
+~~~
+
+Once the Dockerfile was ready, I ran the following command to build the Docker image:
+``docker build -t 1241902/chat-server:v1 .``
+
+By using the **-t** flag, I am able to create a custom name and version so that I can identify it easier.
+
+Next, I ran the command ``docker images`` to ensure that the image was built correctly. The image below shows the output of that command
+as well as additional information for the image.
+![ca23-dockerimages.png](images/ca23-dockerimages.png)
+
+The next step was to run the Docker container and for that I used the command ``docker run -p 12345:12345 1241902/chat-server:v1``
+
+The **-p** flag in the command is used to map ports between my host machine and the Docker container. In this case, I chose port *12345*
+(which meant changing the port in the *build.gradle* file). The image below shows the command running.
+![ca23-dockerrun.png](images/ca23-dockerrun.png)
+
+Over on DockerDesktop, it was possible to see that the container was created as soon as the command was executed:
+![ca23-dockercontainer.png](images/ca23-dockercontainer.png)
+
+Now that the chat server was running, I needed to launch the chat client to verify that the application was functioning correctly.
+
+To do this, I opened two new terminals and ran the following commands to start the Client side of the application:
+~~~bash
+./gradlew build
+./gradlew runClient
+~~~
+The image below shows the interaction between the two clients whilst the server is running in the Docker container.
+![ca23-dockerchat.png](images/ca23-dockerchat.png)
+
+![ca23-dockerchatRunning.png](images/ca23-dockerchatRunning.png)
+
+Once everything was running smoothly, it was time to push the Docker image to DockerHub. For this, I ran the following commands:
+~~~bash
+#tagging the image
+docker tag 1241902/chat-server:v1 1241902/chat-server:v1
+#pushing the image to DockerHub
+docker push 1241902/chat-server:v1
+~~~
+![ca23-dockerpush.png](images/ca23-dockerpush.png)
+
+After this, I checked the repository in DockerHub and got the confirmation that the image was indeed pushed.
+![ca23-dockerhub.png](images/ca23-dockerhub.png)
+
+
+
+
+
+
+
+
+
 
