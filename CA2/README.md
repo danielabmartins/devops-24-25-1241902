@@ -8,6 +8,12 @@
 
 - [Introduction](#introduction)
 - [Part 1](#part-1)
+- [Part 2](#part-2)
+  -[Part 2.1](#part-21)
+  -[Part 2.2](#part-22)
+- [Part 3](#part-3)
+  -[Part 3.1](#part-31)
+  -[Part 3.2](#part-32)
 
 - [Conclusion](#conclusion)
 
@@ -533,6 +539,74 @@ docker push 1241902/chat-server:v1
 After this, I checked the repository in DockerHub and got the confirmation that the image was indeed pushed.
 ![ca23-dockerhub.png](images/ca23-dockerhub.png)
 
+
+##  Part 3.2
+The second version of this assignment involves setting up the chat server on my host machine and then copying the JAR file into the
+Docker image. Most of this version will repeat steps from the previous one, so this explanation will be less detailed than the first.
+
+To start out this version, I copied, once again the repository provided by my teachers onto **Version2**. Now that I had
+the Basic Gradle project on the right folder, I was able to run ``./gradlew build``.
+
+This is a very important step for this version as it generates JAR file needed for the assignment. As the image below
+shows, the file **basic_demo-0.1.0.jar** was successfully generated.
+![ca232-dockerjar.png](images/ca232-dockerjar.png)
+
+The next step was to write a new Dockerfile to fit this version. This Dockerfile is more straightforward
+than the earlier one, as it skips the steps of cloning the repository and building the project. Instead,
+it transfers the JAR file created by the Gradle build command on the host machine into the Docker image
+and sets the chat server to run on port 12345.
+
+~~~dockerfile
+# Use the Eclipse Temurin JDK 21 base image for the environment
+FROM eclipse-temurin:21-jdk
+
+# Set the working directory inside the container to /app
+WORKDIR /app
+
+# Copy the JAR file from the host machine's gradle_basic_demo/build/libs directory to the container and rename it to chat-server.jar
+COPY gradle_basic_demo/build/libs/basic_demo-0.1.0.jar chat-server.jar
+
+# Expose port 12345 for the chat server to listen on
+EXPOSE 12345
+
+# Define the command to run when the container starts: Run the Java application with the specified class and port number
+ENTRYPOINT ["java", "-cp", "chat-server.jar", "basic_demo.ChatServerApp", "12345"]
+~~~
+
+The two versions have been different up to this point, but from here on, the steps are quite similar,
+though I will still walk through them.
+
+I began by building the image and for that I used the command ``docker build -t 1241902/chat-server:v2 .``
+To ensure that the command was executed, I ran ``docker images`` and thus confirmed that building was successful.
+![ca232-dockerimages.png](images/ca232-dockerimages.png)
+
+The next step was to run the application and for that I executed the command ``docker run -p 12345:12345 1241902/chat-server:v2``.
+![ca232-dockerchatrun.png](images/ca232-dockerchatrun.png)
+
+Once again, I opened two new terminals as to run the Client side of the application. I ran the command
+``./gradlew runClient`` and created two different chats. This is proven by both pictures below. The first
+shows the actual chats created and the second shows the output of the application.
+![ca232-dockerchat.png](images/ca232-dockerchat.png)
+![ca232-dockerchatrunning.png](images/ca232-dockerchatrunning.png)
+
+It was also possible to check that the container was created when I executed the command. On DockerDesktp,
+I was able to get this confirmation.
+![ca232-dockercontainer.png](images/ca232-dockercontainer.png)
+
+To finish this part of the assignment, I tagged and pushed this new version by using the commands
+``docker tag 1241902/chat-server:v2 1241902/chat-server:v2`` and ``docker push 1241902/chat-server:v2`` respectively.
+
+Finally, over on DockerHub, I was able to see that my repository now contained the image I built.
+![ca232-dockerpush.png](images/ca232-dockerpush.png)
+
+
+--- 
+### Concluding
+
+In this assignment, I containerized a chat server app using Docker. I went through the steps to create
+two different Docker images. The first one built the app right in the Dockerfile, while the second built
+it on my host machine and then copied the JAR file into the Docker image. Both methods showed how Docker
+can streamline deployment and ensure consistency across different environments.
 
 
 
