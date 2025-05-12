@@ -15,6 +15,22 @@
           </set>
         </option>
       </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/CA2/part3/Version1/gradle_basic_demo" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/CA2/part3/Version1/gradle_basic_demo" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/CA2/part3/Version2/gradle_basic_demo" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/CA2/part3/Version2/gradle_basic_demo" />
+          </set>
+        </option>
+      </GradleProjectSettings>
     </option>
   </component>
 </project>
