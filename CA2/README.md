@@ -189,7 +189,7 @@ was running smoothly and I had completed the task with success.
 # Part 2
 ##  Part 2.1
 
-This report for Class Assignment 3 – Part 2 focuses on virtualisation through the use of Vagrant.
+This report for Class Assignment 2 – Part 2 focuses on virtualisation through the use of Vagrant.
 The objective for this part was to configure a virtual environment capable of deploying a Spring Boot application linked to an H2 database.
 
 A pre-existing Vagrantfile served as the starting point and was modified to meet the assignment’s requirements.

@@ -8,7 +8,6 @@ RUN gradle wrapper
 
 RUN chmod +x gradlew
 
-
 RUN ./gradlew build
 
 
