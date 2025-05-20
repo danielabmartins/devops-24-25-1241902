@@ -1,5 +1,5 @@
 
-FROM openjdk:17-jdk-slim
+FROM tomcat:10-jdk17
 
 RUN apt-get update \
     && apt-get install -y git \
@@ -7,13 +7,13 @@ RUN apt-get update \
 
 WORKDIR /usr/src/app
 
-RUN git clone https://github.com/danielabmartins/devops-24-25-1241902.git .
+COPY CA1/part3 .
 
-WORKDIR /usr/src/app/CA1/part3/react-and-spring-data-rest-basic
+WORKDIR /usr/src/app/react-and-spring-data-rest-basic
 
 RUN chmod +x gradlew \
-    && ./gradlew clean bootJar
+    && ./gradlew clean build \
+    && cp ./build/libs/react-and-spring-data-rest-basic-0.0.1-SNAPSHOT-plain.war /usr/local/tomcat/webapps/basic-0.0.1-SNAPSHOT.war
+
 
 EXPOSE 8080
-
-CMD ["java", "-jar", "build/libs/react-and-spring-data-rest-basic-0.0.1-SNAPSHOT.jar"]

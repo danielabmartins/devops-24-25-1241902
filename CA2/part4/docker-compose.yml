@@ -1,9 +1,9 @@
-
 services:
   db:
     build:
-      context: .
-      dockerfile: db.Dockerfile
+      context: ../../
+      dockerfile: CA2/part4/db.Dockerfile
+    image: part4-db:db
     container_name: h2_database
     ports:
       - "8082:8082"  # H2 Web Console
@@ -13,9 +13,10 @@ services:
 
   web:
     build:
-      context: .
-      dockerfile: web.Dockerfile
-    container_name: spring_web_app
+      context: ../../
+      dockerfile: CA2/part4/web.Dockerfile
+    image: part4-web:web
+    container_name: web_app
     ports:
       - "8080:8080"
     depends_on:
