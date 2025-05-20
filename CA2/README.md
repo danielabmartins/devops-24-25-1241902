@@ -14,6 +14,7 @@
 - [Part 3](#part-3)
   -[Part 3.1](#part-31)
   -[Part 3.2](#part-32)
+- [Part 4](#part-4)
 - [Conclusion](#conclusion)
 
 ### Introduction
@@ -790,3 +791,11 @@ make sure the database file could be saved outside the container, which helped m
 this kind of setup. Overall, it was a solid way to get more comfortable with Docker and how to manage multi-container applications.
 
 --- 
+### Conclusion
+This assignment was a great opportunity to explore different ways of creating and managing development environments. Starting with VirtualBox,
+then moving on to automating setups with Vagrant, and finally fully containerizing apps with Docker, I got to see firsthand how each tool builds
+on the last to make deployment easier and more efficient.
+
+Working with Docker Compose and publishing images to Docker Hub really helped me understand modern DevOps workflows, especially around 
+managing multi-container apps and persistent data. Overall, this project boosted my confidence in using these tools and gave me practical 
+skills I can apply to real-world projects.
