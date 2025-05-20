@@ -14,21 +14,24 @@
 - [Part 3](#part-3)
   -[Part 3.1](#part-31)
   -[Part 3.2](#part-32)
-
 - [Conclusion](#conclusion)
 
 ### Introduction
 
 
-**Part 1** The goal is to practice with VirtualBox using the same projects from the previous assignments but now
-inside a VirtualBox/UTM VM with Ubuntu
+**Part 1** The goal was to practice working with VirtualBox by setting up the same projects from previous assignments 
+inside a VirtualBox/UTM virtual machine running Ubuntu.
 
-**Part 2**  The goal of Part 2 of this assignment is to use Vagrant to set up a virtual
-environment to execute the tutorial spring boot application, gradle "basic" version
-(developed in CA1, Part3)
+**Part 2**  The objective here was to use Vagrant to automate the provisioning of a virtual environment, enabling
+the execution of the Spring Boot tutorial application with Gradle (basic version developed in CA1, Part 3).
 
+**Part 3** The goal here was to practise working with Docker by creating images and running containers for the chat server app 
+used in CA1. I created Dockerfiles to package the app and ran the chat client on my host machine to connect to the containerised 
+server. I also created two different versions of the Docker setup as required.
 
-
+**Part 4**  For this part, I switched from Vagrant to Docker to set up the Gradle Spring Boot app using Docker Compose. I 
+made two containers: one for the web app running Tomcat and one for the H2 database. I pushed both images to Docker Hub 
+and set up a volume for the database, so I could easily copy the data file from the container.
 
 ---
 
@@ -609,10 +612,181 @@ it on my host machine and then copied the JAR file into the Docker image. Both m
 can streamline deployment and ensure consistency across different environments.
 
 
+---
+# Part 4
 
+In this report, I go through the steps I took to containerise a Spring Boot web application using Docker. The aim was to move away from the Vagrant setup
+used in Part 2 of the CA and run both the application and its H2 database in Docker containers instead. I used Docker Compose to manage the setup, making it
+easier to run the two services together. The report covers how I wrote the Dockerfiles, set up the docker-compose.yml file, used a volume to access the database
+file, and pushed the images to Docker Hub. Overall, this helped me get a better understanding of how to use Docker for managing and deploying applications.
 
+### db.Dockerfile
+I began by setting up a Dockerfile for the database service, which was an H2 database server in this case. I created the Dockerfile, named it **db.dockerfile**,
+and wrote the following. Below, I also provide a short explanation of what each line does.
 
+~~~dockerfile
+# Use a lightweight OpenJDK 17 runtime as the base image
+FROM openjdk:11-jre-slim
 
+# Update package lists and install wget, then clean up to keep the image slim
+RUN apt-get update \
+    && apt-get install -y wget \
+    && rm -rf /var/lib/apt/lists/*
 
+# Set the working directory inside the container
+WORKDIR /usr/src/app
 
+# Download the H2 database JAR file from Maven Central
+RUN wget https://repo1.maven.org/maven2/com/h2database/h2/1.4.200/h2-1.4.200.jar
 
+# Expose the web console port (default is 8082)
+EXPOSE 8082
+
+# Expose the TCP port used for external connections (default is 9092)
+EXPOSE 9092
+
+# Start the H2 database server with web and TCP access enabled
+CMD ["java", "-cp", "./h2-1.4.200.jar", "org.h2.tools.Server", \
+     "-tcp", "-tcpAllowOthers", "-ifNotExists", \
+     "-web", "-webAllowOthers"]
+~~~
+
+### web.Dockerfile
+I also created a Dockerfile for the web service, which is based on a combined Spring Boot and React project. I named it **web.dockerfile**, and just like with
+the database Dockerfile, I’ll walk through its contents below, explaining what each line does.
+
+~~~dockerfile
+# Use the official Tomcat 10 image with JDK 17 as the base image
+FROM tomcat:10-jdk17
+
+# Update the package list, install Git, and remove cached package lists to keep the image small
+RUN apt-get update \
+    && apt-get install -y git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set the working directory inside the container
+WORKDIR /usr/src/app
+
+# Copy the application source code into the container
+COPY CA1/part3 .
+
+# Change to the directory containing the Spring Boot and React project
+WORKDIR /usr/src/app/react-and-spring-data-rest-basic
+
+# Make the Gradle wrapper executable, build the project, and copy the generated WAR to Tomcat's webapps directory
+RUN chmod +x gradlew \
+    && ./gradlew clean build \
+    && cp ./build/libs/react-and-spring-data-rest-basic-0.0.1-SNAPSHOT-plain.war /usr/local/tomcat/webapps/basic-0.0.1-SNAPSHOT.war
+
+# Expose port 8080 so the application can be accessed
+EXPOSE 8080
+~~~
+
+### docker-compose
+To coordinate both the database and web application containers, I created a **docker-compose.yml** file. This file defines the individual services and specifies
+how they interact with one another.
+
+~~~dockerfile
+# Define the services that make up the application
+services:
+
+# Configuration for the H2 database container
+db:
+# Specify the build context and Dockerfile for the database service
+build:
+context: ../../
+dockerfile: CA2/part4/db.Dockerfile
+image: part4-db:db
+# Name the container "h2_database" for easier reference
+container_name: h2_database
+# Map host ports to container ports for accessing the H2 web console and TCP server
+ports:
+- "8082:8082"  # H2 Web Console
+- "9092:9092"  # H2 TCP Server
+# Connect this service to a shared network so it can communicate with other services
+networks:
+- app-network
+
+# Configuration for the web application container
+web:
+# Specify the build context and Dockerfile for the web service
+build:
+context: ../../
+dockerfile: CA2/part4/web.Dockerfile
+image: part4-web:web
+# Name the container "web_app"
+container_name: web_app
+# Map host port 8080 to container port 8080 to expose the web application
+ports:
+- "8080:8080"
+# Ensure the database service starts before the web service
+depends_on:
+- db
+# Set environment variables for the Spring Boot application to connect to the H2 database
+environment:
+SPRING_DATASOURCE_URL: jdbc:h2:tcp://db:9092/~/test
+SPRING_DATASOURCE_USERNAME: sa
+SPRING_DATASOURCE_PASSWORD:
+# Connect this service to the same network as the database
+networks:
+- app-network
+
+# Define the custom Docker network to allow communication between services
+networks:
+app-network:
+driver: bridge
+~~~
+
+Once all the necessary files were in place and the services were properly defined, I started the application using the following command:
+```docker-compose up --build ```
+
+After the services started successfully, I was able to access the web application at http://localhost:8080 and the H2
+database console at http://localhost:8082. The screenshots below demonstrate successful access to both the web interface and the H2 console.
+The images below confirm that the application was successfully built and that both the web interface and the H2 console are accessible.
+![ca24-table.png](images/ca24-table.png)
+![ca24-database.png](images/ca24-database.png)
+
+I was also able to check on DockerDesktop that both containers were successfully running:
+![ca24-dockercontainers.png](images/ca24-dockercontainers.png)
+
+### Wrapping it up 
+The next stage of this project involved tagging and pushing the images to my Docker Hub repository. For this part of the assignment, I took a 
+different approach compared to Part 3 in how I handled image tagging. This time, I specified custom tags directly within the *docker-compose.yml* 
+file to ensure that each container received the appropriate tag upon being built. I achieved this by adding the lines ```image: part4-web:web``` and
+```image: part4-db:db``` under the respective services.
+
+I ran the ```docker images``` command to verify that the tagging was successful, as shown in the image below.
+![ca24-dockerimages.png](images/ca24-dockerimages.png)
+
+The final step was to push these images, for which I used the same commands as in the previous section:
+```bash
+docker push  1241902/part4-db:db
+docker push  1241902/part4-web:web
+```
+
+As expected, the images were successfully uploaded to my Docker Hub repository:
+![ca24-dockerhub.png](images/ca24-dockerhub.png)
+
+### Working with Volumes
+
+To persist the database file outside the container, I configured a volume for the db service in the *docker-compose.yml* file.
+This volume maps a host directory to a location inside the container where the database file is stored.
+
+After starting the containers, I used the following command to open a shell inside the running db container:
+```docker-compose exec db bash```
+
+Inside the container shell, I confirmed that the database file had been created at /root/test.mv.db, which is the default 
+location based on the connection URL used. I then copied the file to the mounted volume directory with the command:
+``cp /root/test.mv.db /usr/src/data-backup/`` and exited the container with ``exit``
+Back on the host machine, I verified that the database file was successfully copied by checking the contents of the
+./db-data directory. This confirmed that the volume setup worked as intended and that the database file was accessible 
+outside the container.
+
+--- 
+### Concluding:
+This part of the project was a great hands-on experience with Docker. I managed to containerise both the web app and the 
+database, set up their Dockerfiles, and used Docker Compose to get them working together smoothly. I also added a volume to
+make sure the database file could be saved outside the container, which helped me understand how data persistence works in 
+this kind of setup. Overall, it was a solid way to get more comfortable with Docker and how to manage multi-container applications.
+
+--- 
